@@ -151,4 +151,4 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## License
 
-MIT © [Eziz Berdyev](https://github.com/ezizbg)
+MIT © [Eziz Berdiyev](https://github.com/ezizbg)

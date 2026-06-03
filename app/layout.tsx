@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "AI-powered tools for HR professionals and job seekers. Generate cover letters, write job descriptions, and analyze resume-to-job fit with Claude AI.",
   keywords: ["HR tools", "AI cover letter", "resume analyzer", "job description writer", "Claude AI"],
-  authors: [{ name: "Eziz Berdyev" }],
+  authors: [{ name: "Eziz Berdiyev" }],
   openGraph: {
     title: "HR AI Assistant",
     description: "AI-powered HR tools built with Next.js 14 + Anthropic Claude",

@@ -81,7 +81,7 @@ export default function Home() {
         <div className={styles.footerInner}>
           <span className={styles.footerLogo}>Offerify</span>
           <span className={styles.footerDivider}>·</span>
-          <span className={styles.footerCopy}>© {new Date().getFullYear()} Eziz Berdyev</span>
+          <span className={styles.footerCopy}>© {new Date().getFullYear()} Eziz Berdiyev</span>
           <span className={styles.footerDivider}>·</span>
           <a
             href="https://github.com/ezizbg/Offerify"
