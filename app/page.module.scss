@@ -1,0 +1,150 @@
+@use "variables" as *;
+
+// ═══════════════════════════════════
+// PAGE LAYOUT
+// Используем Grid для главного макета страницы
+// ═══════════════════════════════════
+.main {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto; // header / hero / content / footer
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @media (max-width: $bp-tablet) {
+    padding: 0 16px;
+  }
+}
+
+// ═══════════════════════════════════
+// HEADER
+// ═══════════════════════════════════
+.header {
+  padding: 20px 0;
+  border-bottom: 1px solid $border-default;
+  animation: fadeIn 0.5s ease both;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// SVG логотип: анимация обводки при загрузке страницы
+.logoSvg {
+  flex-shrink: 0;
+}
+
+.logoCircle {
+  animation: dashDraw 1.2s ease forwards 0.3s;
+}
+
+.logoArrow {
+  opacity: 0;
+  animation: fadeInOpacity 0.4s ease forwards 1.2s;
+}
+
+.logoText {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $text-primary;
+  letter-spacing: -0.02em;
+}
+
+.headerBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid $border-default;
+  background: $bg-secondary;
+  font-size: 0.8rem;
+  color: $text-secondary;
+}
+
+// Живой зелёный индикатор
+.badgeDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: $success;
+  animation: pulse 2s ease infinite;
+}
+
+// ═══════════════════════════════════
+// HERO SECTION
+// ═══════════════════════════════════
+.hero {
+  padding: 56px 0 40px;
+  text-align: center;
+  animation: fadeIn 0.6s ease 0.2s both;
+
+  @media (max-width: $bp-tablet) {
+    padding: 36px 0 24px;
+  }
+}
+
+.heroContent {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: $text-primary;
+  margin-bottom: 16px;
+}
+
+.heroAccent {
+  // Градиентный текст — signature эффект
+  background: linear-gradient(135deg, $accent-primary, $accent-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSubtitle {
+  font-size: 1.05rem;
+  color: $text-secondary;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+// ═══════════════════════════════════
+// CONTENT SECTION
+// ═══════════════════════════════════
+.content {
+  animation: fadeIn 0.6s ease 0.4s both;
+  padding-bottom: 48px;
+}
+
+// ═══════════════════════════════════
+// FOOTER
+// ═══════════════════════════════════
+.footer {
+  padding: 24px 0;
+  border-top: 1px solid $border-default;
+  text-align: center;
+  font-size: 0.85rem;
+  color: $text-muted;
+}
+
+.footerAccent {
+  color: $text-secondary;
+  font-weight: 500;
+}
