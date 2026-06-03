@@ -3,60 +3,43 @@
 .button {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 14px;
-  border-radius: $radius-sm;
-  border: 1px solid $border-default;
-  background: $bg-tertiary;
-  color: $text-secondary;
-  font-size: 0.82rem;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: $r-pill;
+  border: 1px solid $border;
+  background: transparent;
+  color: $text-3;
+  font-family: $font;
+  font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
-  transition:
-    background $transition-fast,
-    border-color $transition-fast,
-    color $transition-fast,
-    transform $transition-fast;
   white-space: nowrap;
+  transition:
+    border-color $t-fast $ease-out,
+    color $t-fast $ease-out,
+    background $t-fast $ease-out;
 
   &:hover:not(:disabled) {
-    background: $bg-elevated;
-    border-color: $border-active;
-    color: $text-primary;
-    transform: translateY(-1px);
+    border-color: $border-strong;
+    color: $text-1;
+    background: $surface-2;
   }
 
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.7;
-  }
+  &:disabled { opacity: 0.5; cursor: default; }
 }
 
-// Состояние «Скопировано» — зелёный
+// Скопировано
 .success {
-  border-color: rgba(78, 205, 196, 0.5) !important;
-  background: rgba(78, 205, 196, 0.1) !important;
+  border-color: rgba(52, 211, 153, 0.3) !important;
   color: $success !important;
-  animation: fadeInOpacity 0.2s ease;
+  background: rgba(52, 211, 153, 0.06) !important;
 }
 
-// Состояние «Ошибка» — красный
+// Ошибка
 .error {
-  border-color: rgba(255, 107, 107, 0.5) !important;
-  background: rgba(255, 107, 107, 0.1) !important;
+  border-color: rgba(255, 99, 99, 0.3) !important;
   color: $error !important;
 }
 
-.icon {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.label {
-  line-height: 1;
-}
+.icon  { display: flex; align-items: center; flex-shrink: 0; }
+.label { line-height: 1; }

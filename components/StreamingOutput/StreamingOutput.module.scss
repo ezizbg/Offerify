@@ -1,169 +1,127 @@
 @use "app/variables" as *;
 
-// ═══════════════════════════════════
-// EMPTY STATE
-// ═══════════════════════════════════
+// ─── Empty ──────────────────────────────
 .empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 60px 24px;
-  min-height: 200px;
-  animation: fadeInOpacity 0.4s ease;
+  gap: 14px;
+  min-height: 260px;
+  padding: 40px 24px;
+  animation: fadeIn 0.3s $ease-out;
 }
 
 .emptyIcon {
-  color: $text-muted;
+  color: $text-4;
   opacity: 0.6;
 }
 
 .emptyText {
-  font-size: 0.9rem;
-  color: $text-muted;
+  font-size: 0.85rem;
+  color: $text-4;
   text-align: center;
+  line-height: 1.5;
 }
 
-// ═══════════════════════════════════
-// LOADING STATE
-// ═══════════════════════════════════
-.loadingWrapper {
-  min-height: 200px;
+// ─── Loading ─────────────────────────────
+.loadingWrap {
+  min-height: 260px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-// ═══════════════════════════════════
-// ERROR STATE
-// ═══════════════════════════════════
-.errorWrapper {
+// ─── Error ───────────────────────────────
+.errorWrap {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  padding: 20px;
-  border-radius: $radius-md;
-  background: rgba(255, 107, 107, 0.08);
-  border: 1px solid rgba(255, 107, 107, 0.25);
-  animation: fadeIn 0.3s ease;
+  gap: 12px;
+  padding: 18px;
+  border-radius: $r-md;
+  background: rgba(255, 80, 80, 0.06);
+  border: 1px solid rgba(255, 80, 80, 0.18);
+  animation: slideUp 0.3s $ease-out;
 }
 
-.errorIcon {
-  color: $error;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
+.errorIcon { color: $error; flex-shrink: 0; margin-top: 1px; }
+.errorTitle { font-size: 0.9rem; font-weight: 600; color: $error; margin-bottom: 4px; }
+.errorMsg   { font-size: 0.82rem; color: rgba(255, 99, 99, 0.7); line-height: 1.5; }
 
-.errorTitle {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: $error;
-  margin-bottom: 4px;
-}
-
-.errorMessage {
-  font-size: 0.85rem;
-  color: rgba(255, 107, 107, 0.7);
-  line-height: 1.5;
-}
-
-// ═══════════════════════════════════
-// OUTPUT — основной блок с результатом
-// ═══════════════════════════════════
+// ─── Output ──────────────────────────────
 .output {
-  border-radius: $radius-md;
-  border: 1px solid $border-default;
-  background: $bg-secondary;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: $r-md;
+  border: 1px solid $border;
+  background: $surface-1;
   overflow: hidden;
-  animation: slideUp 0.4s ease both;
+  animation: slideUp 0.35s $ease-out;
 }
 
-// Во время стриминга — чуть другая граница
-.outputStreaming {
-  border-color: rgba(108, 99, 255, 0.3);
-  box-shadow: 0 0 20px rgba(108, 99, 255, 0.08);
-}
+.outputStreaming { border-color: rgba(255,255,255,0.14); }
+.outputDone      { border-color: $border; }
 
-.outputDone {
-  border-color: rgba(78, 205, 196, 0.2);
-}
-
-// ═══════════════════════════════════
-// OUTPUT HEADER
-// ═══════════════════════════════════
+// ─── Output header ───────────────────────
 .outputHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid $border-default;
-  background: rgba(255, 255, 255, 0.02);
-  gap: 12px;
-  flex-wrap: wrap;
+  padding: 10px 14px;
+  border-bottom: 1px solid $border;
+  min-height: 42px;
+  gap: 10px;
 }
 
-.outputMeta {
-  display: flex;
-  align-items: center;
-}
-
-// Бейдж «Generating» с пульсирующей точкой
-.streamingBadge {
+// Статусный индикатор
+.statusBadge {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 0.8rem;
-  color: $accent-primary;
+  font-size: 0.75rem;
   font-weight: 500;
 }
+
+.streamingBadge { color: $text-2; }
+.doneBadge      { color: $success; }
 
 .streamingDot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: $accent-primary;
-  animation: pulse 1s ease infinite;
+  background: $text-3;
+  animation: pulse 1.2s ease infinite;
 }
 
-// Бейдж «Done» — зелёный
-.doneBadge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8rem;
-  color: $success;
-  font-weight: 500;
-}
+.doneIcon { display: flex; align-items: center; color: $success; }
 
-// ═══════════════════════════════════
-// OUTPUT CONTENT
-// ═══════════════════════════════════
+// ─── Output content ──────────────────────
 .outputContent {
   padding: 20px;
-  max-height: 60vh;
+  max-height: 58vh;
   overflow-y: auto;
 }
 
-// pre сохраняет переносы строк из ответа Claude
+// pre — сохраняет переносы строк от Claude
 .outputText {
-  font-family: $font-sans;
-  font-size: 0.92rem;
-  color: $text-primary;
-  line-height: 1.75;
-  white-space: pre-wrap;   // переносы строк + мягкий перенос длинных слов
+  font-family: $font;
+  font-size: 0.9rem;
+  color: $text-1;
+  line-height: 1.78;
+  white-space: pre-wrap;
   word-break: break-word;
   margin: 0;
 }
 
-// Мигающий курсор — символ █ с animation
+// Мигающий курсор во время стриминга
 .cursor {
   display: inline-block;
   width: 2px;
-  height: 1.1em;
-  background: $accent-primary;
+  height: 1em;
+  background: $text-2;
   margin-left: 2px;
   vertical-align: text-bottom;
   border-radius: 1px;
-  animation: blink 0.8s ease infinite;
+  animation: blink 0.85s ease infinite;
 }

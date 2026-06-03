@@ -6,18 +6,13 @@ import StreamingOutput from "@/components/StreamingOutput/StreamingOutput";
 import { useStreaming } from "@/hooks/useStreaming";
 import type { JobDescriptionFormData } from "@/types";
 
-const INITIAL_FORM: JobDescriptionFormData = {
-  role: "",
-  requirements: "",
-};
+const INITIAL: JobDescriptionFormData = { role: "", requirements: "" };
 
-// Форма для написания описания вакансии
-// Использует тот же паттерн что и CoverLetterGenerator — через useStreaming
 export default function JobDescriptionWriter() {
-  const [form, setForm] = useState<JobDescriptionFormData>(INITIAL_FORM);
+  const [form, setForm] = useState<JobDescriptionFormData>(INITIAL);
   const { content, status, generate, reset } = useStreaming();
 
-  const isLoading = status === "loading" || status === "streaming";
+  const isLoading  = status === "loading" || status === "streaming";
   const hasContent = status !== "idle" || !!content;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,34 +21,28 @@ export default function JobDescriptionWriter() {
     await generate("job-description", form);
   };
 
-  const handleReset = () => {
-    setForm(INITIAL_FORM);
-    reset();
-  };
+  const handleReset = () => { setForm(INITIAL); reset(); };
 
   return (
     <div className={styles.wrapper}>
-      {/* Форма ввода */}
       <div className={styles.formPanel}>
         <div className={styles.panelHeader}>
           <h2 className={styles.panelTitle}>Job Description Writer</h2>
-          <p className={styles.panelSubtitle}>
-            Describe the role and requirements — get a professional, inclusive job posting.
-          </p>
+          <p className={styles.panelSub}>Describe the role — get a structured, inclusive job posting.</p>
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.field}>
             <label className={styles.label} htmlFor="jd-role">
-              Role / Position Title <span className={styles.required}>*</span>
+              Position Title <span className={styles.required}>*</span>
             </label>
             <input
               id="jd-role"
               type="text"
               className={styles.input}
-              placeholder="e.g. Senior Frontend Engineer, Product Manager, UX Designer..."
+              placeholder="e.g. Senior Frontend Engineer, Product Manager…"
               value={form.role}
-              onChange={(e) => setForm((prev) => ({ ...prev, role: e.target.value }))}
+              onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))}
               required
               disabled={isLoading}
               maxLength={200}
@@ -67,62 +56,29 @@ export default function JobDescriptionWriter() {
             <textarea
               id="jd-req"
               className={styles.textarea}
-              placeholder={`Describe what you're looking for in free form. Include:
-• Key skills and technologies
-• Years of experience
-• Team size and structure
-• Company stage (startup, enterprise...)
-• Salary range (optional)
-• Remote / hybrid / office
-• Any unique perks or selling points`}
+              placeholder={`Describe what you're looking for — skills, experience, team size, remote/office, salary range, company stage…`}
               value={form.requirements}
-              onChange={(e) => setForm((prev) => ({ ...prev, requirements: e.target.value }))}
-              rows={11}
+              onChange={(e) => setForm((p) => ({ ...p, requirements: e.target.value }))}
+              rows={12}
               required
               disabled={isLoading}
             />
             <span className={styles.charCount}>{form.requirements.length} chars</span>
           </div>
 
-          {/* Быстрые подсказки */}
-          <div className={styles.tips}>
-            <span className={styles.tipsLabel}>Tip:</span>
-            <span className={styles.tipsText}>
-              More context = better JD. Include tech stack, team culture, and what makes this role unique.
-            </span>
-          </div>
-
           <div className={styles.actions}>
             <button
               type="submit"
-              className={styles.submitButton}
+              className={styles.submitBtn}
               disabled={isLoading || !form.role.trim() || !form.requirements.trim()}
             >
-              {isLoading ? (
-                <>
-                  <span className={styles.buttonSpinner} aria-hidden="true" />
-                  Writing...
-                </>
-              ) : (
-                <>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M2 12V3a1 1 0 011-1h7l3 3v7a1 1 0 01-1 1H3a1 1 0 01-1-1z"
-                      stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
-                    <path d="M9 2v3h3M5 7h6M5 9.5h6M5 12h4"
-                      stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                  </svg>
-                  Write Job Description
-                </>
-              )}
+              {isLoading
+                ? <><span className={styles.spinner} aria-hidden="true" />Writing…</>
+                : "Write Job Description"
+              }
             </button>
-
             {hasContent && (
-              <button
-                type="button"
-                className={styles.resetButton}
-                onClick={handleReset}
-                disabled={isLoading}
-              >
+              <button type="button" className={styles.resetBtn} onClick={handleReset} disabled={isLoading}>
                 Clear
               </button>
             )}
@@ -130,12 +86,11 @@ export default function JobDescriptionWriter() {
         </form>
       </div>
 
-      {/* Результат */}
       <div className={styles.outputPanel}>
         <StreamingOutput
           content={content}
           status={status}
-          emptyMessage="Your job description will appear here. Describe the role and click Write."
+          emptyMessage="Your job description will appear here."
         />
       </div>
     </div>

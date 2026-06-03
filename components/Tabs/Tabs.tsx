@@ -7,37 +7,31 @@ import CoverLetterGenerator from "@/components/CoverLetterGenerator/CoverLetterG
 import JobDescriptionWriter from "@/components/JobDescriptionWriter/JobDescriptionWriter";
 import ResumeAnalyzer from "@/components/ResumeAnalyzer/ResumeAnalyzer";
 
-// Конфигурация табов — добавить новый режим = добавить одну запись здесь
 const TAB_CONFIG: TabConfig[] = [
-  {
-    id: "cover-letter",
-    label: "Cover Letter",
-    description: "Generate personalized cover letters",
-    icon: "✍️",
-  },
-  {
-    id: "job-description",
-    label: "Job Description",
-    description: "Write compelling job postings",
-    icon: "📋",
-  },
-  {
-    id: "resume-analyzer",
-    label: "Resume Analyzer",
-    description: "Check resume-to-job fit",
-    icon: "🔍",
-  },
+  { id: "cover-letter",     label: "Cover Letter",     description: "Generate personalized cover letters", icon: "✍️" },
+  { id: "job-description",  label: "Job Description",  description: "Write compelling job postings",        icon: "📋" },
+  { id: "resume-analyzer",  label: "Resume Analyzer",  description: "Check resume-to-job fit",             icon: "🔍" },
 ];
 
-// Таб-навигация — Client Component, управляет активным режимом
-// Дочерние компоненты рендерятся через условный render, не через route
 export default function Tabs() {
   const [activeTab, setActiveTab] = useState<TabMode>("cover-letter");
 
+  // Индекс активного таба для CSS sliding indicator
+  const activeIndex = TAB_CONFIG.findIndex((t) => t.id === activeTab);
+
   return (
     <div className={styles.container}>
-      {/* Таб-навигация */}
-      <nav className={styles.nav} role="tablist" aria-label="HR Assistant tools">
+      {/* Segmented control — iOS/macOS style */}
+      <nav
+        className={styles.nav}
+        role="tablist"
+        aria-label="HR Assistant tools"
+        // Передаём индекс через CSS custom property — индикатор двигается через CSS
+        style={{ "--active-index": activeIndex } as React.CSSProperties}
+      >
+        {/* Скользящий индикатор — позади кнопок, анимируется через CSS */}
+        <span className={styles.slider} aria-hidden="true" />
+
         {TAB_CONFIG.map((tab) => {
           const isActive = activeTab === tab.id;
           return (
@@ -50,11 +44,7 @@ export default function Tabs() {
               className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
               onClick={() => setActiveTab(tab.id)}
             >
-              <span className={styles.tabIcon} aria-hidden="true">{tab.icon}</span>
-              <span className={styles.tabLabel}>{tab.label}</span>
-              <span className={styles.tabDesc}>{tab.description}</span>
-              {/* Активная линия под табом */}
-              {isActive && <span className={styles.tabLine} aria-hidden="true" />}
+              {tab.label}
             </button>
           );
         })}
@@ -62,32 +52,23 @@ export default function Tabs() {
 
       {/* Панели контента */}
       <div className={styles.panels}>
-        <div
-          role="tabpanel"
-          id={`panel-cover-letter`}
-          aria-labelledby={`tab-cover-letter`}
-          hidden={activeTab !== "cover-letter"}
-        >
-          {activeTab === "cover-letter" && <CoverLetterGenerator />}
-        </div>
-
-        <div
-          role="tabpanel"
-          id={`panel-job-description`}
-          aria-labelledby={`tab-job-description`}
-          hidden={activeTab !== "job-description"}
-        >
-          {activeTab === "job-description" && <JobDescriptionWriter />}
-        </div>
-
-        <div
-          role="tabpanel"
-          id={`panel-resume-analyzer`}
-          aria-labelledby={`tab-resume-analyzer`}
-          hidden={activeTab !== "resume-analyzer"}
-        >
-          {activeTab === "resume-analyzer" && <ResumeAnalyzer />}
-        </div>
+        {TAB_CONFIG.map((tab) => (
+          <div
+            key={tab.id}
+            role="tabpanel"
+            id={`panel-${tab.id}`}
+            aria-labelledby={`tab-${tab.id}`}
+            hidden={activeTab !== tab.id}
+          >
+            {activeTab === tab.id && (
+              <>
+                {tab.id === "cover-letter"    && <CoverLetterGenerator />}
+                {tab.id === "job-description" && <JobDescriptionWriter />}
+                {tab.id === "resume-analyzer" && <ResumeAnalyzer />}
+              </>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

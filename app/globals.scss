@@ -1,32 +1,23 @@
-// Импортируем переменные напрямую в globals
-// (в модульных файлах они приходят через next.config.ts sassOptions)
 @use "variables" as *;
 
 // ═══════════════════════════════════
 // CSS CUSTOM PROPERTIES
-// Дублируем ключевые переменные как CSS vars для удобства
 // ═══════════════════════════════════
 :root {
-  --bg-primary: #{$bg-primary};
-  --bg-secondary: #{$bg-secondary};
-  --bg-tertiary: #{$bg-tertiary};
-  --bg-elevated: #{$bg-elevated};
-  --border-default: #{$border-default};
-  --border-active: #{$border-active};
-  --accent-primary: #{$accent-primary};
-  --accent-secondary: #{$accent-secondary};
-  --text-primary: #{$text-primary};
-  --text-secondary: #{$text-secondary};
-  --text-muted: #{$text-muted};
-  --success: #{$success};
-  --error: #{$error};
-  --radius-sm: #{$radius-sm};
-  --radius-md: #{$radius-md};
-  --radius-lg: #{$radius-lg};
+  --bg:         #{$bg};
+  --surface-1:  #{$surface-1};
+  --surface-2:  #{$surface-2};
+  --border:     #{$border};
+  --text-1:     #{$text-1};
+  --text-2:     #{$text-2};
+  --text-3:     #{$text-3};
+  --accent:     #{$accent};
+  --r-md:       #{$r-md};
+  --r-lg:       #{$r-lg};
 }
 
 // ═══════════════════════════════════
-// RESET & BASE
+// RESET
 // ═══════════════════════════════════
 *, *::before, *::after {
   box-sizing: border-box;
@@ -39,150 +30,93 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  // Предотвращаем горизонтальный скролл на мобильном
+  overflow-x: hidden;
 }
 
 body {
-  font-family: $font-sans;
-  background-color: $bg-primary;
-  color: $text-primary;
+  font-family: $font;
+  background: $bg;
+  color: $text-1;
   line-height: 1.6;
   min-height: 100vh;
-
-  // Фоновая сетка — тонкий паттерн для глубины
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(108, 99, 255, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 20%, rgba(78, 205, 196, 0.04) 0%, transparent 50%);
-  background-attachment: fixed;
 }
 
 // ═══════════════════════════════════
-// KEYFRAME ANIMATIONS — глобальные
+// KEYFRAMES
 // ═══════════════════════════════════
 
-// Плавное появление элементов
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-// Появление только по opacity (без сдвига)
-@keyframes fadeInOpacity {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
-// Печатающийся курсор
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  50%       { opacity: 0; }
 }
 
-// Пульсация для акцентных элементов
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-// Вращение для спиннера
 @keyframes spin {
   from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  to   { transform: rotate(360deg); }
 }
 
-// Анимация прогресс-бара
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
 }
 
-// Появление снизу вверх для результатов
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-// Индикатор стриминга — точки
-@keyframes typingDot {
-  0%, 80%, 100% { transform: scale(0.8); opacity: 0.4; }
-  40% { transform: scale(1.2); opacity: 1; }
-}
-
-// SVG dash animation для логотипа/спиннера
 @keyframes dashDraw {
   from { stroke-dashoffset: 283; }
-  to { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: 0; }
 }
 
-@keyframes dashRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.3; }
+  40%           { transform: scale(1);   opacity: 1; }
 }
 
 // ═══════════════════════════════════
-// UTILITY CLASSES
+// SCROLLBAR
+// ═══════════════════════════════════
+::-webkit-scrollbar       { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+
+// ═══════════════════════════════════
+// SELECTION & FOCUS
+// ═══════════════════════════════════
+::selection {
+  background: rgba(41, 151, 255, 0.25);
+  color: $text-1;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(41, 151, 255, 0.6);
+  outline-offset: 2px;
+  border-radius: $r-sm;
+}
+
+// ═══════════════════════════════════
+// ACCESSIBILITY
 // ═══════════════════════════════════
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   white-space: nowrap;
   border-width: 0;
-}
-
-.fade-in {
-  animation: fadeIn 0.4s ease both;
-}
-
-// ═══════════════════════════════════
-// SCROLLBAR STYLING
-// ═══════════════════════════════════
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: $bg-secondary;
-}
-
-::-webkit-scrollbar-thumb {
-  background: $border-active;
-  border-radius: 3px;
-
-  &:hover {
-    background: $text-muted;
-  }
-}
-
-// ═══════════════════════════════════
-// SELECTION
-// ═══════════════════════════════════
-::selection {
-  background-color: rgba(108, 99, 255, 0.3);
-  color: $text-primary;
-}
-
-// ═══════════════════════════════════
-// FOCUS — доступность
-// ═══════════════════════════════════
-:focus-visible {
-  outline: 2px solid $accent-primary;
-  outline-offset: 2px;
-  border-radius: $radius-sm;
 }
