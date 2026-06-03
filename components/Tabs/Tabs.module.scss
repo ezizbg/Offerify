@@ -1,0 +1,133 @@
+@use "app/variables" as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+// ═══════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════
+.nav {
+  display: grid;
+  // Три таба равной ширины — Grid идеален для таких случаев
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 6px;
+  background: $bg-secondary;
+  border-radius: $radius-lg $radius-lg 0 0;
+  border: 1px solid $border-default;
+  border-bottom: none;
+
+  @media (max-width: $bp-tablet) {
+    gap: 2px;
+    padding: 4px;
+  }
+
+  @media (max-width: $bp-mobile) {
+    // На мобильном — таб только с иконкой + коротким лейблом
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+}
+
+// ═══════════════════════════════════
+// TAB BUTTON
+// ═══════════════════════════════════
+.tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 12px;
+  border-radius: $radius-md;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  color: $text-secondary;
+  transition:
+    background $transition-default,
+    color $transition-default,
+    border-color $transition-default,
+    transform $transition-fast;
+  text-align: center;
+
+  &:hover:not(.tabActive) {
+    background: $bg-tertiary;
+    color: $text-primary;
+    border-color: $border-default;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  @media (max-width: $bp-tablet) {
+    padding: 10px 8px;
+    gap: 2px;
+  }
+}
+
+// Активный таб
+.tabActive {
+  background: $bg-elevated;
+  color: $text-primary;
+  border-color: $border-active;
+  // Лёгкое свечение у активного таба
+  box-shadow: 0 0 0 1px rgba(108, 99, 255, 0.2);
+}
+
+.tabIcon {
+  font-size: 1.2rem;
+  line-height: 1;
+
+  @media (max-width: $bp-mobile) {
+    font-size: 1rem;
+  }
+}
+
+.tabLabel {
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  @media (max-width: $bp-mobile) {
+    font-size: 0.75rem;
+  }
+}
+
+.tabDesc {
+  font-size: 0.72rem;
+  color: $text-muted;
+  line-height: 1.2;
+  // Описание скрываем на мобильном — мало места
+  @media (max-width: $bp-mobile) {
+    display: none;
+  }
+}
+
+// Анимированная линия под активным табом
+.tabLine {
+  position: absolute;
+  bottom: -1px;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg, $accent-primary, $accent-secondary);
+  border-radius: 2px 2px 0 0;
+  animation: fadeInOpacity 0.2s ease;
+}
+
+// ═══════════════════════════════════
+// PANELS
+// ═══════════════════════════════════
+.panels {
+  background: $bg-secondary;
+  border: 1px solid $border-default;
+  border-radius: 0 0 $radius-lg $radius-lg;
+  // Overflow hidden чтобы скруглённые углы работали с дочерними элементами
+  overflow: hidden;
+}
