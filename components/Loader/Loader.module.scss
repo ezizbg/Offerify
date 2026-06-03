@@ -1,0 +1,72 @@
+@use "app/variables" as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px;
+}
+
+.svgWrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.svg {
+  // SVG вращается через transform-origin центра
+  transform-origin: center;
+}
+
+// Внешняя дуга — вращается по часовой стрелке
+.arcOuter {
+  transform-origin: center;
+  animation: spin 1.4s linear infinite;
+  // transform-box нужен чтобы transform-origin работал относительно элемента
+  transform-box: fill-box;
+}
+
+// Внутренняя дуга — вращается против часовой
+.arcInner {
+  transform-origin: center;
+  animation: spin 1s linear infinite reverse;
+  transform-box: fill-box;
+}
+
+// Центральная точка — пульсирует
+.dot {
+  animation: pulse 1.4s ease infinite;
+}
+
+.textWrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.text {
+  font-size: 0.9rem;
+  color: $text-secondary;
+  font-weight: 500;
+}
+
+// Три анимированные точки — каждая со своей задержкой
+.dots {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+
+  span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: $accent-primary;
+    animation: typingDot 1.2s ease infinite;
+
+    &:nth-child(1) { animation-delay: 0s; }
+    &:nth-child(2) { animation-delay: 0.2s; }
+    &:nth-child(3) { animation-delay: 0.4s; }
+  }
+}

@@ -1,0 +1,62 @@
+@use "app/variables" as *;
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border-radius: $radius-sm;
+  border: 1px solid $border-default;
+  background: $bg-tertiary;
+  color: $text-secondary;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background $transition-fast,
+    border-color $transition-fast,
+    color $transition-fast,
+    transform $transition-fast;
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    background: $bg-elevated;
+    border-color: $border-active;
+    color: $text-primary;
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+}
+
+// Состояние «Скопировано» — зелёный
+.success {
+  border-color: rgba(78, 205, 196, 0.5) !important;
+  background: rgba(78, 205, 196, 0.1) !important;
+  color: $success !important;
+  animation: fadeInOpacity 0.2s ease;
+}
+
+// Состояние «Ошибка» — красный
+.error {
+  border-color: rgba(255, 107, 107, 0.5) !important;
+  background: rgba(255, 107, 107, 0.1) !important;
+  color: $error !important;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.label {
+  line-height: 1;
+}
