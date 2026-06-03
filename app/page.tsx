@@ -78,12 +78,20 @@ export default function Home() {
 
       {/* Футер */}
       <footer className={styles.footer}>
-        <p>
-          Built with{" "}
-          <span className={styles.footerAccent}>Next.js 14</span> +{" "}
-          <span className={styles.footerAccent}>Anthropic Claude</span>
-          {" "}— Portfolio project by Eziz Berdyev
-        </p>
+        <div className={styles.footerInner}>
+          <span className={styles.footerLogo}>Offerify</span>
+          <span className={styles.footerDivider}>·</span>
+          <span className={styles.footerCopy}>© {new Date().getFullYear()} Eziz Berdyev</span>
+          <span className={styles.footerDivider}>·</span>
+          <a
+            href="https://github.com/ezizbg/Offerify"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.footerLink}
+          >
+            GitHub
+          </a>
+        </div>
       </footer>
     </main>
   );

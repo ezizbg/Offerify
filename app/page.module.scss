@@ -137,14 +137,44 @@
 // FOOTER
 // ═══════════════════════════════════
 .footer {
-  padding: 24px 0;
+  padding: 20px 0;
   border-top: 1px solid $border-default;
-  text-align: center;
-  font-size: 0.85rem;
+}
+
+.footerInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 0.83rem;
   color: $text-muted;
 }
 
-.footerAccent {
+.footerLogo {
+  font-weight: 700;
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, $accent-primary, $accent-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.footerDivider {
+  opacity: 0.3;
+  user-select: none;
+}
+
+.footerCopy {
+  color: $text-muted;
+}
+
+.footerLink {
   color: $text-secondary;
-  font-weight: 500;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $text-primary;
+  }
 }
