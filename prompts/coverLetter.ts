@@ -1,73 +1,75 @@
 import type { CoverLetterFormData } from "@/types";
 
-const SHARED_RULES = `
-🌐 LANGUAGE — TOP PRIORITY:
-Detect the primary language of the Job Description.
-Write the ENTIRE letter in that SAME language — every word.
-Russian JD → 100% Russian. English JD → 100% English. No mixing.
-
-MODERN COVER LETTER RULES (recruiter reads in 6 seconds — every word must earn its place):
-
-✗ NEVER start with "I am writing…" / "Я пишу, чтобы…" or any variation
-✗ NEVER use: "team player", "passionate", "quick learner", "нацелен на результат", "командный игрок"
-✗ NEVER pad — no filler, no warm-up sentences, no generic company praise
-✗ NEVER use markdown (no **bold**, no ## headers, no bullets) — plain prose only
-✗ NEVER add subject lines, greetings like "Dear Hiring Manager", or meta-commentary
-✗ NEVER repeat the resume verbatim — reframe and synthesize
-
-PRE-WRITE (mental only, never output):
-① Identify: company name, exact job title, top 2 requirements from JD
-② Extract: candidate's single strongest quantified achievement relevant to this role
-③ Pick: 3 ATS keywords from the JD to weave into paragraph 2
-
-STRUCTURE — exactly 3 paragraphs, plain prose:
-
-Paragraph 1 — The Hook (2-3 sentences, ~40 words):
-Open with a direct, confident statement about the VALUE you bring to THIS role.
-Reference the exact job title and something specific about the company or the role challenge.
-No "I want to apply." Lead with what you deliver.
-
-Paragraph 2 — The Proof (3-4 sentences, ~80 words):
-State your strongest, most relevant achievement — with a number if the resume has one.
-Connect it directly to a stated need from the JD.
-Weave in 2-3 exact keywords from the JD naturally — not forced.
-One additional skill or experience that addresses another requirement.
-
-Paragraph 3 — The Close (1-2 sentences, ~30 words):
-Confident, specific call to action. Suggest a conversation.
-Sign off with full name on the next line.
-
-TARGET: 140-180 words total. Tight. Scannable. Zero filler.`;
-
 /**
  * Text mode — resume is pasted manually.
  */
-export function buildCoverLetterPrompt(data: CoverLetterFormData): string {
-  return `You are an elite cover letter writer. You write short, punchy letters that get callbacks — not walls of text that get ignored.
-${SHARED_RULES}
+export function getCoverLetterPrompt(vacancy: string, resume: string): string {
+  return `You are an expert cover letter writer specializing in ATS optimization and AI screening filters.
 
-JOB DESCRIPTION:
-${data.jobDescription}
+The user has provided a job vacancy and their resume. Generate a ready-to-send cover letter immediately.
 
-CANDIDATE'S RESUME:
-${data.resume}
+COVER LETTER RULES:
+- Maximum 200 words
+- NO greetings, NO "my name is", NO "I want to work here", NO filler
+- Start immediately with the tech stack matching their requirements — use their exact keywords
+- Extract key requirements and keywords from the vacancy — include them naturally
+- Use action verbs: developed, implemented, integrated, optimized, built
+- Mention specific relevant projects from the resume
+- If vacancy is AI/LLM related — mention relevant AI experience from the resume
+- If a required technology is missing from resume — mention familiarity with similar solutions, don't overclaim
+- End with contact info from the resume if available
+- NO markdown formatting (no **bold**, no ## headers, no bullets) — plain prose only
 
-Write the cover letter now. Output ONLY the 3 paragraphs + name sign-off. No subject line. No commentary. 140-180 words maximum.`;
+LANGUAGE RULE:
+Detect the language of the vacancy.
+If Russian — write entirely in Russian.
+If English — write entirely in English.
+Never mix languages.
+
+OUTPUT: ready-to-send cover letter only. Clean text block. No headers, no explanations outside the letter.
+
+---
+VACANCY:
+${vacancy}
+
+---
+RESUME:
+${resume}`;
 }
 
 /**
  * PDF mode — resume is passed as a document content block.
  */
-export function buildCoverLetterPromptForPDF(
+export function getCoverLetterPromptForPDF(
   data: Pick<CoverLetterFormData, "jobDescription">
 ): string {
-  return `You are an elite cover letter writer. You write short, punchy letters that get callbacks — not walls of text that get ignored.
-${SHARED_RULES}
+  return `You are an expert cover letter writer specializing in ATS optimization and AI screening filters.
 
-JOB DESCRIPTION:
+The user has provided a job vacancy and their resume as a PDF. Generate a ready-to-send cover letter immediately.
+
+COVER LETTER RULES:
+- Maximum 200 words
+- NO greetings, NO "my name is", NO "I want to work here", NO filler
+- Start immediately with the tech stack matching their requirements — use their exact keywords
+- Extract key requirements and keywords from the vacancy — include them naturally
+- Use action verbs: developed, implemented, integrated, optimized, built
+- Mention specific relevant projects from the attached PDF resume
+- If vacancy is AI/LLM related — mention relevant AI experience from the resume
+- If a required technology is missing — mention familiarity with similar solutions, don't overclaim
+- End with contact info from the resume if available
+- NO markdown formatting (no **bold**, no ## headers, no bullets) — plain prose only
+
+LANGUAGE RULE:
+Detect the language of the vacancy.
+If Russian — write entirely in Russian.
+If English — write entirely in English.
+Never mix languages.
+
+OUTPUT: ready-to-send cover letter only. Clean text block. No headers, no explanations outside the letter.
+
+---
+VACANCY:
 ${data.jobDescription}
 
-The candidate's resume is attached as a PDF. Read it — extract their name, strongest quantified achievement, and experience level.
-
-Write the cover letter now. Output ONLY the 3 paragraphs + name sign-off. No subject line. No commentary. 140-180 words maximum.`;
+The candidate's resume is attached as a PDF. Read it carefully — extract their name, skills, and key achievements.`;
 }

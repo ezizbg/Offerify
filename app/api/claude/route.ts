@@ -1,9 +1,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest } from "next/server";
 import type { ClaudeRequestBody, CoverLetterFormData, ResumeAnalyzerFormData } from "@/types";
-import { buildCoverLetterPrompt, buildCoverLetterPromptForPDF } from "@/prompts/coverLetter";
-import { buildJobDescriptionPrompt } from "@/prompts/jobDescription";
-import { buildResumeAnalyzerPrompt, buildResumeAnalyzerPromptForPDF } from "@/prompts/resumeAnalyzer";
+import { getCoverLetterPrompt, getCoverLetterPromptForPDF } from "@/prompts/coverLetter";
+import { getJobDescriptionPrompt } from "@/prompts/jobDescription";
+import { getResumeAnalyzerPrompt, getResumeAnalyzerPromptForPDF } from "@/prompts/resumeAnalyzer";
 
 // ═══════════════════════════════════════════════════════════
 // SECURITY: Rate Limiter
@@ -131,24 +131,26 @@ export async function POST(request: NextRequest) {
             );
           }
           messageContent = [
-            { type: "text", text: buildCoverLetterPromptForPDF(clData) },
+            { type: "text", text: getCoverLetterPromptForPDF(clData) },
             {
               type: "document",
               source: { type: "base64", media_type: "application/pdf", data: clData.resumePdfBase64 },
             },
           ];
         } else {
-          messageContent = buildCoverLetterPrompt(clData);
+          messageContent = getCoverLetterPrompt(clData.jobDescription, clData.resume ?? "");
         }
         break;
       }
 
       // ─── Job Description ────────────────────────────────
-      case "job-description":
-        messageContent = buildJobDescriptionPrompt(
-          data as Parameters<typeof buildJobDescriptionPrompt>[0]
+      case "job-description": {
+        const jdData = data as { role: string; requirements: string };
+        messageContent = getJobDescriptionPrompt(
+          `Role: ${jdData.role}\n\nRequirements & Context:\n${jdData.requirements}`
         );
         break;
+      }
 
       // ─── Resume Analyzer ────────────────────────────────
       case "resume-analyzer": {
@@ -161,14 +163,14 @@ export async function POST(request: NextRequest) {
             );
           }
           messageContent = [
-            { type: "text", text: buildResumeAnalyzerPromptForPDF(raData) },
+            { type: "text", text: getResumeAnalyzerPromptForPDF(raData) },
             {
               type: "document",
               source: { type: "base64", media_type: "application/pdf", data: raData.resumePdfBase64 },
             },
           ];
         } else {
-          messageContent = buildResumeAnalyzerPrompt(raData);
+          messageContent = getResumeAnalyzerPrompt(raData.jobDescription, raData.resume ?? "");
         }
         break;
       }
