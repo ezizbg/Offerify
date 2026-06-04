@@ -149,6 +149,11 @@
   border-radius: 50%;
   animation: spin 0.65s linear infinite;
   flex-shrink: 0;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 0.65s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 .resetBtn {

@@ -1,5 +1,6 @@
 "use client";
 
+import ReactMarkdown from "react-markdown";
 import styles from "./StreamingOutput.module.scss";
 import CopyButton from "@/components/CopyButton/CopyButton";
 import type { StreamingStatus } from "@/types";
@@ -10,7 +11,6 @@ interface StreamingOutputProps {
   emptyMessage?: string;
 }
 
-// Skeleton — строки для трёх "абзацев"
 const SKELETON_GROUPS = [
   [92, 87, 95, 78],
   [96, 82, 89, 71, 84],
@@ -39,20 +39,18 @@ export default function StreamingOutput({
     );
   }
 
-  // ── Loading — skeleton ───────────────────────────────────
+  // ── Loading — animated skeleton ──────────────────────────
   if (status === "loading") {
     let delay = 0;
     return (
       <div className={`${styles.output} ${styles.outputLoading}`}>
-        {/* Animated top border */}
         <div className={styles.outputHeader}>
           <span className={`${styles.statusBadge} ${styles.streamingBadge}`}>
             <span className={styles.streamingDot} aria-hidden="true" />
             Claude is thinking…
           </span>
         </div>
-
-        <div className={styles.skeleton} aria-busy="true" aria-label="Generating content">
+        <div className={styles.skeleton} aria-busy="true" aria-label="Generating">
           {SKELETON_GROUPS.map((group, gi) => (
             <div key={gi} className={styles.skeletonGroup}>
               {group.map((w, li) => {
@@ -114,16 +112,15 @@ export default function StreamingOutput({
             Done
           </span>
         )}
-
         {content && !isStreaming && <CopyButton text={content} />}
       </div>
 
-      {/* Content */}
+      {/* Rendered markdown content */}
       <div className={styles.outputContent}>
-        <pre className={styles.outputText}>
-          {content}
+        <div className={`${styles.markdown} ${isStreaming ? styles.markdownStreaming : ""}`}>
+          <ReactMarkdown>{content}</ReactMarkdown>
           {isStreaming && <span className={styles.cursor} aria-hidden="true" />}
-        </pre>
+        </div>
       </div>
     </div>
   );

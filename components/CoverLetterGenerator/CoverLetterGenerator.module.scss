@@ -260,6 +260,12 @@
   border-radius: 50%;
   animation: spin 0.65s linear infinite;
   flex-shrink: 0;
+
+  // Functional animation — keep rotating regardless of reduced-motion setting
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 0.65s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 .resetBtn {

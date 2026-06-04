@@ -9,7 +9,7 @@
   gap: 14px;
   min-height: 300px;
   padding: 40px 24px;
-  animation: fadeIn 0.35s $ease-out;
+  animation: fadeIn 0.35s $ease-out both;
 }
 
 .emptyIcon { color: $text-4; }
@@ -26,7 +26,6 @@
   border-color: rgba(108,99,255,0.25);
   animation: fadeIn 0.2s $ease-out;
 
-  // Animated top border (same as streaming)
   &::before {
     content: '';
     display: block;
@@ -41,6 +40,11 @@
     );
     background-size: 200% auto;
     animation: borderShimmer 2s linear infinite;
+    // Functional animation — override reduced motion
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 2s !important;
+      animation-iteration-count: infinite !important;
+    }
   }
 }
 
@@ -71,6 +75,11 @@
   background-size: 250% auto;
   animation: skeletonShimmer 1.8s ease-in-out infinite;
   will-change: background-position;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 1.8s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 // ─── Error ───────────────────────────────
@@ -82,12 +91,12 @@
   border-radius: $r-md;
   background: rgba(248, 113, 113, 0.06);
   border: 1px solid rgba(248, 113, 113, 0.2);
-  animation: slideUp 0.3s $ease-out;
+  animation: slideUp 0.3s $ease-out both;
 }
 
 .errorIcon  { color: $error; flex-shrink: 0; margin-top: 2px; }
 .errorTitle { font-size: 0.9rem; font-weight: 600; color: $error; margin-bottom: 4px; }
-.errorMsg   { font-size: 0.82rem; color: rgba(248,113,113,0.7); line-height: 1.5; }
+.errorMsg   { font-size: 0.82rem; color: rgba(248,113,113,0.75); line-height: 1.55; word-break: break-word; }
 
 // ─── Output container ────────────────────
 .output {
@@ -95,15 +104,13 @@
   border: 1px solid $border;
   background: $glass-1;
   overflow: hidden;
-  animation: slideUp 0.35s $ease-out;
+  animation: slideUp 0.3s $ease-out both;
 }
 
-// Во время стриминга — акцентная граница + свечение
 .outputStreaming {
   border-color: $border-accent;
   box-shadow: 0 0 0 1px rgba(108,99,255,0.08), 0 0 48px rgba(108,99,255,0.08);
 
-  // Анимированная верхняя граница-полоска
   &::before {
     content: '';
     display: block;
@@ -118,6 +125,11 @@
     );
     background-size: 200% auto;
     animation: borderShimmer 2s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: 2s !important;
+      animation-iteration-count: infinite !important;
+    }
   }
 }
 
@@ -152,35 +164,125 @@
   background: $accent;
   box-shadow: 0 0 6px rgba(108,99,255,0.7);
   animation: pulse 1s ease infinite;
+  flex-shrink: 0;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 1s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 .doneIcon { display: flex; align-items: center; }
 
-// ─── Content ─────────────────────────────
+// ─── Content area ────────────────────────
 .outputContent {
   padding: 20px;
   max-height: 58vh;
   overflow-y: auto;
 }
 
-.outputText {
+// ─── Markdown rendered output ─────────────
+.markdown {
   font-family: $font;
   font-size: 0.9rem;
   color: $text-1;
   line-height: 1.8;
-  white-space: pre-wrap;
   word-break: break-word;
-  margin: 0;
+
+  // Paragraphs
+  p {
+    margin-bottom: 14px;
+    color: $text-1;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  // Headings
+  h1, h2 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: $text-1;
+    letter-spacing: -0.01em;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid $border;
+    &:first-child { margin-top: 0; }
+  }
+
+  h3, h4 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: $text-1;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    &:first-child { margin-top: 0; }
+  }
+
+  // Bold & italic
+  strong { font-weight: 700; color: $text-1; }
+  em     { font-style: italic; color: $text-2; }
+
+  // Lists
+  ul, ol {
+    padding-left: 20px;
+    margin-bottom: 12px;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  li {
+    margin-bottom: 5px;
+    color: $text-1;
+    line-height: 1.7;
+  }
+
+  // Nested lists
+  li > ul, li > ol { margin-top: 4px; margin-bottom: 4px; }
+
+  // Horizontal rule
+  hr {
+    border: none;
+    border-top: 1px solid $border;
+    margin: 16px 0;
+  }
+
+  // Inline code
+  code {
+    background: $glass-3;
+    border: 1px solid $border;
+    border-radius: 4px;
+    padding: 1px 5px;
+    font-family: $font-mono;
+    font-size: 0.82em;
+    color: $accent-2;
+  }
+
+  // Blockquote
+  blockquote {
+    border-left: 2px solid $border-accent;
+    padding-left: 12px;
+    margin: 0 0 12px;
+    color: $text-2;
+  }
 }
 
-// Мигающий курсор — только во время стриминга
+// During streaming: text fades in
+.markdownStreaming {
+  p:last-child { animation: fadeIn 0.15s $ease-out; }
+}
+
+// Blinking cursor — inline after last content
 .cursor {
   display: inline-block;
   width: 2px;
-  height: 1.05em;
+  height: 1em;
   background: $accent;
   margin-left: 2px;
   vertical-align: text-bottom;
   border-radius: 1px;
   animation: blink 0.8s ease infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation-duration: 0.8s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
