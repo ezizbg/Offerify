@@ -7,15 +7,12 @@
   align-items: center;
   justify-content: center;
   gap: 14px;
-  min-height: 260px;
+  min-height: 300px;
   padding: 40px 24px;
-  animation: fadeIn 0.3s $ease-out;
+  animation: fadeIn 0.35s $ease-out;
 }
 
-.emptyIcon {
-  color: $text-4;
-  opacity: 0.6;
-}
+.emptyIcon { color: $text-4; }
 
 .emptyText {
   font-size: 0.85rem;
@@ -26,7 +23,7 @@
 
 // ─── Loading ─────────────────────────────
 .loadingWrap {
-  min-height: 260px;
+  min-height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,31 +36,50 @@
   gap: 12px;
   padding: 18px;
   border-radius: $r-md;
-  background: rgba(255, 80, 80, 0.06);
-  border: 1px solid rgba(255, 80, 80, 0.18);
+  background: rgba(248, 113, 113, 0.06);
+  border: 1px solid rgba(248, 113, 113, 0.2);
   animation: slideUp 0.3s $ease-out;
 }
 
-.errorIcon { color: $error; flex-shrink: 0; margin-top: 1px; }
+.errorIcon  { color: $error; flex-shrink: 0; margin-top: 2px; }
 .errorTitle { font-size: 0.9rem; font-weight: 600; color: $error; margin-bottom: 4px; }
-.errorMsg   { font-size: 0.82rem; color: rgba(255, 99, 99, 0.7); line-height: 1.5; }
+.errorMsg   { font-size: 0.82rem; color: rgba(248,113,113,0.7); line-height: 1.5; }
 
-// ─── Output ──────────────────────────────
+// ─── Output container ────────────────────
 .output {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
   border-radius: $r-md;
   border: 1px solid $border;
-  background: $surface-1;
+  background: $glass-1;
   overflow: hidden;
   animation: slideUp 0.35s $ease-out;
 }
 
-.outputStreaming { border-color: rgba(255,255,255,0.14); }
-.outputDone      { border-color: $border; }
+// Во время стриминга — акцентная граница + свечение
+.outputStreaming {
+  border-color: $border-accent;
+  box-shadow: 0 0 0 1px rgba(108,99,255,0.08), 0 0 48px rgba(108,99,255,0.08);
 
-// ─── Output header ───────────────────────
+  // Анимированная верхняя граница-полоска
+  &::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      $accent,
+      $accent-2,
+      $accent,
+      transparent
+    );
+    background-size: 200% auto;
+    animation: borderShimmer 2s linear infinite;
+  }
+}
+
+.outputDone { border-color: $border; }
+
+// ─── Header ──────────────────────────────
 .outputHeader {
   display: flex;
   align-items: center;
@@ -74,7 +90,6 @@
   gap: 10px;
 }
 
-// Статусный индикатор
 .statusBadge {
   display: flex;
   align-items: center;
@@ -83,45 +98,45 @@
   font-weight: 500;
 }
 
-.streamingBadge { color: $text-2; }
+.streamingBadge { color: $text-3; }
 .doneBadge      { color: $success; }
 
 .streamingDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: $text-3;
-  animation: pulse 1.2s ease infinite;
+  background: $accent;
+  box-shadow: 0 0 6px rgba(108,99,255,0.7);
+  animation: pulse 1s ease infinite;
 }
 
-.doneIcon { display: flex; align-items: center; color: $success; }
+.doneIcon { display: flex; align-items: center; }
 
-// ─── Output content ──────────────────────
+// ─── Content ─────────────────────────────
 .outputContent {
   padding: 20px;
   max-height: 58vh;
   overflow-y: auto;
 }
 
-// pre — сохраняет переносы строк от Claude
 .outputText {
   font-family: $font;
   font-size: 0.9rem;
   color: $text-1;
-  line-height: 1.78;
+  line-height: 1.8;
   white-space: pre-wrap;
   word-break: break-word;
   margin: 0;
 }
 
-// Мигающий курсор во время стриминга
+// Мигающий курсор — только во время стриминга
 .cursor {
   display: inline-block;
   width: 2px;
-  height: 1em;
-  background: $text-2;
+  height: 1.05em;
+  background: $accent;
   margin-left: 2px;
   vertical-align: text-bottom;
   border-radius: 1px;
-  animation: blink 0.85s ease infinite;
+  animation: blink 0.8s ease infinite;
 }

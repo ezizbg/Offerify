@@ -1,16 +1,14 @@
 @use "app/variables" as *;
 
-// Двухколоночный layout: форма слева, результат справа
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 580px;
-  animation: fadeIn 0.25s $ease-out;
+  animation: fadeIn 0.3s $ease-out;
 
   @media (max-width: $bp-lg) { grid-template-columns: 1fr; }
 }
 
-// ─── Panels ───────────────────────
 .formPanel {
   padding: 32px;
   border-right: 1px solid $border;
@@ -30,51 +28,27 @@
   @media (max-width: $bp-lg) { padding: 24px 20px; }
 }
 
-// ─── Panel header ─────────────────
 .panelHeader { display: flex; flex-direction: column; gap: 6px; }
+.panelTitle  { font-size: 1rem; font-weight: 600; color: $text-1; letter-spacing: -0.02em; }
+.panelSub    { font-size: 0.83rem; color: $text-3; line-height: 1.55; }
 
-.panelTitle {
-  font-size: 1rem;
-  font-weight: 600;
-  color: $text-1;
-  letter-spacing: -0.02em;
-}
-
-.panelSub {
-  font-size: 0.83rem;
-  color: $text-3;
-  line-height: 1.55;
-}
-
-// ─── Form ─────────────────────────
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  flex: 1;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.form  { display: flex; flex-direction: column; gap: 18px; flex: 1; }
+.field { display: flex; flex-direction: column; gap: 8px; }
 
 .label {
-  font-size: 0.72rem;
+  font-size: 0.71rem;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: $text-3;
 }
 
-.required { color: $text-3; }
+.required { color: $accent; opacity: 0.7; }
 
-// Минималистичный textarea — Apple style
 .textarea {
   width: 100%;
   padding: 13px 15px;
-  background: $surface-1;
+  background: $glass-2;
   border: 1px solid $border;
   border-radius: $r-md;
   color: $text-1;
@@ -84,79 +58,72 @@
   resize: vertical;
   transition:
     border-color $t-default $ease-out,
-    background $t-default $ease-out;
+    background $t-default $ease-out,
+    box-shadow $t-default $ease-out;
 
   &::placeholder { color: $text-4; }
 
   &:focus {
     outline: none;
-    border-color: $border-strong;
-    background: $surface-2;
+    border-color: rgba(108, 99, 255, 0.5);
+    background: $glass-2;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.10);
   }
 
-  &:hover:not(:focus):not(:disabled) {
-    border-color: rgba(255,255,255,0.14);
-  }
-
-  &:disabled { opacity: 0.5; cursor: not-allowed; resize: none; }
+  &:hover:not(:focus):not(:disabled) { border-color: $border-medium; }
+  &:disabled { opacity: 0.45; cursor: not-allowed; resize: none; }
 }
 
 .charCount {
   align-self: flex-end;
-  font-size: 0.7rem;
+  font-size: 0.69rem;
   color: $text-4;
   font-variant-numeric: tabular-nums;
 }
 
-// ─── Actions ──────────────────────
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
+.actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-// Белая кнопка — Apple-style primary action
+// Градиентная кнопка со свечением — живая, с характером
 .submitBtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 22px;
+  padding: 11px 24px;
   border-radius: $r-pill;
   border: none;
-  background: $text-1;
-  color: #000;
+  background: linear-gradient(135deg, $accent 0%, mix($accent, $accent-2, 60%) 100%);
+  color: #fff;
   font-family: $font;
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
+  position: relative;
   transition:
     opacity $t-fast $ease-out,
-    transform $t-fast $ease-out;
-  white-space: nowrap;
+    transform $t-fast $ease-spring,
+    box-shadow $t-default $ease-out;
 
   &:hover:not(:disabled) {
-    opacity: 0.88;
-    transform: scale(1.01);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.45);
   }
 
-  &:active:not(:disabled) { transform: scale(0.98); }
+  &:active:not(:disabled) { transform: translateY(0) scale(0.98); }
 
-  &:disabled { opacity: 0.3; cursor: not-allowed; }
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
 }
 
-// Inline spinner внутри кнопки
 .spinner {
   width: 13px;
   height: 13px;
-  border: 2px solid rgba(0,0,0,0.2);
-  border-top-color: #000;
+  border: 2px solid rgba(255,255,255,0.25);
+  border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.65s linear infinite;
   flex-shrink: 0;
 }
 
-// Кнопка сброса — ghost
 .resetBtn {
   display: inline-flex;
   align-items: center;
@@ -164,20 +131,22 @@
   border-radius: $r-pill;
   border: 1px solid $border;
   background: transparent;
-  color: $text-2;
+  color: $text-3;
   font-family: $font;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
   transition:
     border-color $t-fast $ease-out,
-    color $t-fast $ease-out;
+    color $t-fast $ease-out,
+    background $t-fast $ease-out;
   animation: fadeIn 0.2s $ease-out;
 
   &:hover:not(:disabled) {
-    border-color: $border-strong;
+    border-color: $border-medium;
     color: $text-1;
+    background: $glass-2;
   }
 
-  &:disabled { opacity: 0.4; cursor: not-allowed; }
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
 }

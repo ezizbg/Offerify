@@ -4,16 +4,15 @@
 // CSS CUSTOM PROPERTIES
 // ═══════════════════════════════════
 :root {
-  --bg:         #{$bg};
-  --surface-1:  #{$surface-1};
-  --surface-2:  #{$surface-2};
-  --border:     #{$border};
-  --text-1:     #{$text-1};
-  --text-2:     #{$text-2};
-  --text-3:     #{$text-3};
-  --accent:     #{$accent};
-  --r-md:       #{$r-md};
-  --r-lg:       #{$r-lg};
+  --accent:       #{$accent};
+  --accent-dim:   #{$accent-dim};
+  --border:       #{$border};
+  --text-1:       #{$text-1};
+  --text-2:       #{$text-2};
+  --text-3:       #{$text-3};
+  --r-md:         #{$r-md};
+  --r-lg:         #{$r-lg};
+  --ease-spring:  #{$ease-spring};
 }
 
 // ═══════════════════════════════════
@@ -30,7 +29,6 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  // Предотвращаем горизонтальный скролл на мобильном
   overflow-x: hidden;
 }
 
@@ -40,14 +38,79 @@ body {
   color: $text-1;
   line-height: 1.6;
   min-height: 100vh;
+  position: relative;
+  isolation: isolate;
+}
+
+// ─── Анимированные фоновые орбы ──────────
+// CSS-only, не требуют JS, не влияют на layout
+// Создают ощущение глубины как у Linear/Vercel
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -30vh;
+  left: -20vw;
+  width: 80vw;
+  height: 80vh;
+  background: radial-gradient(circle,
+    rgba(108, 99, 255, 0.12) 0%,
+    rgba(108, 99, 255, 0.04) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: orbDrift1 22s ease-in-out infinite;
+  will-change: transform;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20vh;
+  right: -15vw;
+  width: 70vw;
+  height: 70vh;
+  background: radial-gradient(circle,
+    rgba(78, 205, 196, 0.08) 0%,
+    rgba(78, 205, 196, 0.02) 40%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  animation: orbDrift2 28s ease-in-out infinite;
+  will-change: transform;
 }
 
 // ═══════════════════════════════════
 // KEYFRAMES
 // ═══════════════════════════════════
 
+// Медленное дрейфование орбов
+@keyframes orbDrift1 {
+  0%,100% { transform: translate(0, 0) scale(1); }
+  33%     { transform: translate(5vw, 4vh) scale(1.05); }
+  66%     { transform: translate(-3vw, 6vh) scale(0.95); }
+}
+
+@keyframes orbDrift2 {
+  0%,100% { transform: translate(0, 0) scale(1); }
+  40%     { transform: translate(-4vw, -5vh) scale(1.08); }
+  70%     { transform: translate(3vw, -2vh) scale(0.96); }
+}
+
+// Анимированный градиент текста заголовка
+@keyframes gradientFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+// Входящие анимации
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -56,34 +119,52 @@ body {
   to   { opacity: 1; }
 }
 
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+// Утилиты
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes dashDraw {
-  from { stroke-dashoffset: 283; }
-  to   { stroke-dashoffset: 0; }
+  50%       { opacity: 0.35; }
 }
 
 @keyframes dotBounce {
   0%, 80%, 100% { transform: scale(0.7); opacity: 0.3; }
-  40%           { transform: scale(1);   opacity: 1; }
+  40%           { transform: scale(1.1); opacity: 1; }
+}
+
+// SVG анимация логотипа
+@keyframes dashDraw {
+  from { stroke-dashoffset: 57; }
+  to   { stroke-dashoffset: 0; }
+}
+
+// Мерцание свечения (для активных элементов)
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(108, 99, 255, 0.15); }
+  50%       { box-shadow: 0 0 35px rgba(108, 99, 255, 0.30); }
+}
+
+// Shimmer для streaming border
+@keyframes borderShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
 }
 
 // ═══════════════════════════════════
@@ -91,26 +172,36 @@ body {
 // ═══════════════════════════════════
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.22); }
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  &:hover { background: rgba(255,255,255,0.2); }
+}
 
 // ═══════════════════════════════════
 // SELECTION & FOCUS
 // ═══════════════════════════════════
 ::selection {
-  background: rgba(41, 151, 255, 0.25);
+  background: rgba(108, 99, 255, 0.28);
   color: $text-1;
 }
 
 :focus-visible {
-  outline: 2px solid rgba(41, 151, 255, 0.6);
+  outline: 2px solid rgba(108, 99, 255, 0.6);
   outline-offset: 2px;
   border-radius: $r-sm;
 }
 
-// ═══════════════════════════════════
-// ACCESSIBILITY
-// ═══════════════════════════════════
+// Если у пользователя отключены анимации — всё показывается сразу
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;

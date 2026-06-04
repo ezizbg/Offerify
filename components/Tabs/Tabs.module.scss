@@ -3,59 +3,65 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 0;
 }
 
 // ═══════════════════════════════════
 // SEGMENTED CONTROL
-// iOS/macOS style tab navigation
 // ═══════════════════════════════════
 .nav {
   position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   padding: 4px;
-  background: $surface-1;
+  background: $glass-1;
   border: 1px solid $border;
   border-bottom: none;
   border-radius: $r-lg $r-lg 0 0;
-  gap: 0;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-// Скользящий индикатор — позиционируется через CSS custom property --active-index
-// translateX(100%) = ширина индикатора = 1/3 контейнера
-// Это точный расчёт: 0, 1*100%, 2*100% совпадают с позициями табов
+// Скользящий индикатор со свечением на активном табе
 .slider {
   position: absolute;
   top: 4px;
   left: 4px;
-  // Ширина = (100% контейнера - 8px отступов) / 3 таба
   width: calc((100% - 8px) / 3);
   height: calc(100% - 8px);
-  background: $surface-3;
-  border: 1px solid $border-strong;
+  background: $glass-3;
+  border: 1px solid $border-medium;
   border-radius: calc(#{$r-lg} - 4px);
-  // translateX на 100% своей ширины = переход на следующий таб
   transform: translateX(calc(var(--active-index, 0) * 100%));
-  transition: transform 0.32s $ease-standard;
-  pointer-events: none;  // клики проходят сквозь
+  transition: transform 0.32s $ease-std;
+  pointer-events: none;
   will-change: transform;
+
+  // Тонкое свечение снизу активного таба
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 20%;
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $accent, transparent);
+    border-radius: 2px;
+    opacity: 0.7;
+  }
 }
 
-// ═══════════════════════════════════
-// TAB BUTTON
-// ═══════════════════════════════════
+// ─── Tab button ─────────────────────
 .tab {
-  position: relative;  // выше слайдера (z-index)
+  position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
+  padding: 11px 16px;
   border: none;
   background: transparent;
   color: $text-3;
-  font-family: inherit;
+  font-family: $font;
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
@@ -64,32 +70,25 @@
   white-space: nowrap;
   letter-spacing: -0.01em;
 
-  // Hover для неактивных
-  &:hover:not(.tabActive) {
-    color: $text-2;
-  }
+  &:hover:not(.tabActive) { color: $text-2; }
 
   @media (max-width: $bp-sm) {
     font-size: 0.78rem;
-    padding: 9px 8px;
+    padding: 9px 6px;
   }
 }
 
-// Активный таб — белый текст
 .tabActive {
   color: $text-1;
   font-weight: 600;
 }
 
-// ═══════════════════════════════════
-// CONTENT PANELS
-// ═══════════════════════════════════
+// ─── Content panel ──────────────────
 .panels {
-  background: $surface-1;
+  background: $glass-1;
   border: 1px solid $border;
   border-radius: 0 0 $r-lg $r-lg;
   overflow: hidden;
-  // Backdrop blur — стеклянный эффект
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
 }

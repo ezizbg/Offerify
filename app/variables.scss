@@ -1,61 +1,69 @@
 // ═══════════════════════════════════
-// DESIGN TOKENS — Apple-inspired system
-// Один источник правды для всего проекта
+// DESIGN TOKENS — Premium Dark SaaS
+// Вдохновение: Linear, Vercel, Raycast
 // ═══════════════════════════════════
 
-// Фон — чистый чёрный как Apple.com
-$bg: #000000;
+// Фон — почти чёрный с едва уловимым синим оттенком
+$bg:         #07070c;
+$bg-surface: #0e0e16;   // поверхности
+$bg-raised:  #13131e;   // приподнятые элементы
 
-// Поверхности — стеклянный эффект
-$surface-1: rgba(255, 255, 255, 0.04);   // карточки, панели
-$surface-2: rgba(255, 255, 255, 0.07);   // hover состояния
-$surface-3: rgba(255, 255, 255, 0.11);   // активные/выбранные
+// Акцент — один сильный цвет, используется точечно
+$accent:      #6c63ff;              // indigo-purple
+$accent-dim:  rgba(108, 99, 255, 0.18);
+$accent-glow: rgba(108, 99, 255, 0.35);
+$accent-2:    #4ecdc4;              // cyan — только для градиентов
+$accent-warm: rgba(108, 99, 255, 0.08);
 
-// Границы — очень тонкие
+// Поверхности (стекло)
+$glass-1: rgba(255, 255, 255, 0.03);
+$glass-2: rgba(255, 255, 255, 0.055);
+$glass-3: rgba(255, 255, 255, 0.09);
+
+// Границы
 $border:        rgba(255, 255, 255, 0.08);
-$border-strong: rgba(255, 255, 255, 0.18);
+$border-medium: rgba(255, 255, 255, 0.14);
+$border-strong: rgba(255, 255, 255, 0.22);
+$border-accent: rgba(108, 99, 255, 0.4);
 
-// Типографика — Apple использует #f5f5f7
-$text-1: #f5f5f7;                          // заголовки, важный контент
-$text-2: rgba(245, 245, 247, 0.60);        // body text, описания
-$text-3: rgba(245, 245, 247, 0.30);        // плейсхолдеры, мелочи
-$text-4: rgba(245, 245, 247, 0.18);        // совсем приглушённое
+// Типографика — Apple F5F5F7 + opacity
+$text-1: #f5f5f7;
+$text-2: rgba(245, 245, 247, 0.62);
+$text-3: rgba(245, 245, 247, 0.36);
+$text-4: rgba(245, 245, 247, 0.18);
 
-// Один акцентный цвет — Apple Blue для тёмного фона
-$accent: #2997ff;
-$accent-dim: rgba(41, 151, 255, 0.15);
+// Семантика
+$success: #34d399;
+$error:   #f87171;
 
-// Семантические цвета
-$success: rgba(52, 211, 153, 0.9);
-$error:   rgba(255, 99, 99, 0.9);
-
-// Типографика
-$font: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+// Шрифт
+$font:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 $font-mono: 'JetBrains Mono', 'SF Mono', monospace;
 
 // Скругления
-$r-sm: 8px;
-$r-md: 12px;
-$r-lg: 18px;
-$r-xl: 24px;
-$r-pill: 980px;  // Apple использует очень большой radius для кнопок
+$r-sm:   8px;
+$r-md:   12px;
+$r-lg:   18px;
+$r-xl:   24px;
+$r-pill: 980px;
 
 // Тени
-$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-$shadow-md: 0 4px 24px rgba(0, 0, 0, 0.5);
+$shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.5);
+$shadow-md:  0 4px 20px rgba(0, 0, 0, 0.6);
+$shadow-glow: 0 0 40px rgba(108, 99, 255, 0.2);
 
-// Easing — Apple-style spring
-$ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-$ease-out:      cubic-bezier(0, 0, 0.2, 1);
-$ease-in:       cubic-bezier(0.4, 0, 1, 1);
+// Easing
+$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);  // пружина — для hover
+$ease-out:    cubic-bezier(0, 0, 0.2, 1);
+$ease-std:    cubic-bezier(0.4, 0, 0.2, 1);
 
 // Переходы
-$t-fast:    150ms;
-$t-default: 250ms;
-$t-slow:    400ms;
+$t-fast:    140ms;
+$t-default: 240ms;
+$t-slow:    380ms;
 
 // Брейкпоинты
-$bp-sm:  480px;
-$bp-md:  768px;
-$bp-lg:  1024px;
-$bp-xl:  1280px;
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
