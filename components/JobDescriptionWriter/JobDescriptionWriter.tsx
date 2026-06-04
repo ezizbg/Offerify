@@ -3,6 +3,7 @@
 import { useState } from "react";
 import styles from "./JobDescriptionWriter.module.scss";
 import StreamingOutput from "@/components/StreamingOutput/StreamingOutput";
+import Spinner from "@/components/Spinner/Spinner";
 import { useStreaming } from "@/hooks/useStreaming";
 import type { JobDescriptionFormData } from "@/types";
 
@@ -73,7 +74,7 @@ export default function JobDescriptionWriter() {
               disabled={isLoading || !form.role.trim() || !form.requirements.trim()}
             >
               {isLoading
-                ? <><span className={styles.spinner} aria-hidden="true" />Writing…</>
+                ? <><Spinner />Writing…</>
                 : "Write Job Description"
               }
             </button>

@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import styles from "./CoverLetterGenerator.module.scss";
 import StreamingOutput from "@/components/StreamingOutput/StreamingOutput";
+import Spinner from "@/components/Spinner/Spinner";
 import { useStreaming } from "@/hooks/useStreaming";
 import type { CoverLetterFormData } from "@/types";
 
@@ -255,7 +256,7 @@ export default function CoverLetterGenerator() {
               disabled={!canSubmit}
             >
               {isLoading ? (
-                <><span className={styles.spinner} aria-hidden="true" />Generating…</>
+                <><Spinner />Generating…</>
               ) : (
                 "Generate Cover Letter"
               )}

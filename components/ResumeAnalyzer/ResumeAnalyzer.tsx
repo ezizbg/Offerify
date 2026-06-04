@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import styles from "./ResumeAnalyzer.module.scss";
 import StreamingOutput from "@/components/StreamingOutput/StreamingOutput";
+import Spinner from "@/components/Spinner/Spinner";
 import { useStreaming } from "@/hooks/useStreaming";
 import type { ResumeAnalyzerFormData } from "@/types";
 
@@ -264,7 +265,7 @@ export default function ResumeAnalyzer() {
               disabled={!canSubmit}
             >
               {isLoading ? (
-                <><span className={styles.spinner} aria-hidden="true" />Analyzing…</>
+                <><Spinner />Analyzing…</>
               ) : (
                 "Analyze Resume"
               )}

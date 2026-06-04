@@ -252,16 +252,8 @@
   &:disabled::after { display: none; }
 }
 
-.spinner {
-  width: 13px;
-  height: 13px;
-  border: 2px solid rgba(255,255,255,0.25);
-  border-top-color: #fff;
-  border-radius: 50%;
-  // !important beats the global * { animation-iteration-count: 1 } rule
-  animation: spin 0.65s linear infinite !important;
-  flex-shrink: 0;
-}
+// Spinner removed — replaced with SVG <Spinner /> component (animateTransform,
+// immune to CSS prefers-reduced-motion and disabled-button rendering quirks)
 
 .resetBtn {
   display: inline-flex;
