@@ -32,7 +32,7 @@ All tools stream responses **token by token** — you see results as they're gen
 | Framework | **Next.js 14 App Router** | Server Components + Route Handlers for secure server-side API calls |
 | Language | **TypeScript** (strict) | Full type safety across components, API, and prompts |
 | Styling | **SCSS Modules** | Scoped styles, design tokens, zero runtime overhead |
-| AI | **Anthropic Claude 3.5 Haiku** | Fast responses ideal for streaming UX |
+| AI | **Anthropic Claude Haiku 4.5** | Fast responses ideal for streaming UX |
 | AI SDK | `@anthropic-ai/sdk` | Official streaming support, typed responses |
 | Streaming | Native `ReadableStream` + `fetch` | No extra libraries — browser-native chunk-by-chunk delivery |
 | Deployment | **Vercel** | Zero-config Next.js hosting, edge functions, env var management |

@@ -35,7 +35,7 @@ export default function Home() {
           {/* Announcement badge */}
           <div className={styles.badge}>
             <span className={styles.badgePulse} aria-hidden="true" />
-            <span>Claude 3.5 Haiku · Real-time streaming</span>
+            <span>Claude Haiku 4.5 · Real-time streaming</span>
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" className={styles.badgeArrow}>
               <path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>

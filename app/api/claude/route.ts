@@ -64,7 +64,7 @@ const anthropic = new Anthropic({
 });
 
 const MAX_TOKENS = 1500;
-const MODEL      = "claude-3-5-haiku-20241022";
+const MODEL      = "claude-haiku-4-5"; // самая быстрая и дешёвая текущая модель
 
 // ═══════════════════════════════════════════════════════════
 // POST /api/claude
