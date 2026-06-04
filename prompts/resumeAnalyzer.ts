@@ -1,14 +1,12 @@
 import type { ResumeAnalyzerFormData } from "@/types";
 
-/**
- * Промпт для анализа резюме.
- * Структурированный вывод с процентом совпадения и конкретными советами.
- */
-export function buildResumeAnalyzerPrompt(data: ResumeAnalyzerFormData): string {
-  return `You are an expert ATS (Applicant Tracking System) specialist and career coach who helps candidates optimize their resumes for specific job applications.
+const ROLE =
+  `You are an expert ATS (Applicant Tracking System) specialist and career coach ` +
+  `who helps candidates optimize their resumes for specific job applications.\n\n` +
+  `Your task: Analyze how well the candidate's resume matches the job description, ` +
+  `then provide actionable feedback.`;
 
-Your task: Analyze how well the candidate's resume matches the job description, then provide actionable feedback.
-
+const OUTPUT_FORMAT = `
 OUTPUT FORMAT (follow exactly):
 ## Match Score: [X]%
 
@@ -31,13 +29,38 @@ SCORING GUIDE:
 - 85-100%: Strong candidate, minor gaps
 - 70-84%: Good candidate, some important gaps to address
 - 50-69%: Moderate fit, significant work needed
-- Below 50%: Significant mismatch, consider if this role is the right target
+- Below 50%: Significant mismatch, consider if this role is the right target`;
+
+/**
+ * Текстовый режим — resume вставлен вручную.
+ */
+export function buildResumeAnalyzerPrompt(data: ResumeAnalyzerFormData): string {
+  return `${ROLE}
+${OUTPUT_FORMAT}
 
 JOB DESCRIPTION:
 ${data.jobDescription}
 
 CANDIDATE'S RESUME:
 ${data.resume}
+
+Analyze now. Be honest, specific, and constructive.`;
+}
+
+/**
+ * PDF режим — resume будет передан как document-блок (отдельный content block).
+ * Этот промпт идёт первым текстовым блоком; PDF — вторым.
+ */
+export function buildResumeAnalyzerPromptForPDF(
+  data: Pick<ResumeAnalyzerFormData, "jobDescription">
+): string {
+  return `${ROLE}
+${OUTPUT_FORMAT}
+
+JOB DESCRIPTION:
+${data.jobDescription}
+
+The candidate's resume is provided as the attached PDF document. Read it carefully.
 
 Analyze now. Be honest, specific, and constructive.`;
 }

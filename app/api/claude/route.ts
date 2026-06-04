@@ -1,42 +1,100 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest } from "next/server";
-import type { ClaudeRequestBody } from "@/types";
-import { buildCoverLetterPrompt } from "@/prompts/coverLetter";
+import type { ClaudeRequestBody, CoverLetterFormData, ResumeAnalyzerFormData } from "@/types";
+import { buildCoverLetterPrompt, buildCoverLetterPromptForPDF } from "@/prompts/coverLetter";
 import { buildJobDescriptionPrompt } from "@/prompts/jobDescription";
-import { buildResumeAnalyzerPrompt } from "@/prompts/resumeAnalyzer";
+import { buildResumeAnalyzerPrompt, buildResumeAnalyzerPromptForPDF } from "@/prompts/resumeAnalyzer";
 
-// ═══════════════════════════════════
-// API ROUTE HANDLER — /api/claude
-//
-// Этот файл запускается ТОЛЬКО на сервере (Node.js runtime).
-// API ключ недоступен на клиенте — это production-подход.
-//
-// Архитектура:
-//   Browser → POST /api/claude → (сервер) Anthropic API → Stream → Browser
-//
-// Streaming через ReadableStream: токены идут к пользователю
-// сразу по мере генерации, без ожидания полного ответа.
-// ═══════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// SECURITY: Rate Limiter
+// Простой in-memory ограничитель — сбрасывается при cold start
+// (serverless). Для продакшена → Upstash Redis / Vercel KV.
+// ═══════════════════════════════════════════════════════════
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_MAX    = 20;         // запросов
+const RATE_LIMIT_WINDOW = 60_000;     // 1 минута (мс)
 
-// Инициализируем клиент Anthropic один раз при старте модуля
-// process.env.ANTHROPIC_API_KEY доступен только server-side
+function getClientIp(req: NextRequest): string {
+  return (
+    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown"
+  );
+}
+
+function checkRateLimit(ip: string): boolean {
+  const now   = Date.now();
+  const entry = rateLimitMap.get(ip);
+
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count++;
+  return true;
+}
+
+// Чистим просроченные записи раз в 5 минут (утечка памяти)
+setInterval(() => {
+  const now = Date.now();
+  for (const [ip, entry] of rateLimitMap) {
+    if (now > entry.resetAt) rateLimitMap.delete(ip);
+  }
+}, 5 * 60_000);
+
+// ═══════════════════════════════════════════════════════════
+// SECURITY: Input size limits
+// ═══════════════════════════════════════════════════════════
+const MAX_TEXT_CHARS     = 12_000;   // ~3 000 токенов на поле
+const MAX_PDF_B64_BYTES  = 8_388_608; // 8 MB base64 ≈ 6 MB PDF
+
+// ═══════════════════════════════════════════════════════════
+// Anthropic Client — инициализируется один раз при старте модуля.
+// process.env.ANTHROPIC_API_KEY доступен ТОЛЬКО server-side.
+// ═══════════════════════════════════════════════════════════
+if (!process.env.ANTHROPIC_API_KEY) {
+  throw new Error(
+    "[Offerify] ANTHROPIC_API_KEY is not set. Add it to .env.local"
+  );
+}
+
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-// Максимальное количество токенов в ответе
 const MAX_TOKENS = 1500;
+const MODEL      = "claude-3-5-haiku-20241022";
 
-// Модель Claude — claude-3-5-haiku быстрее и дешевле для streaming UX
-const MODEL = "claude-3-5-haiku-20241022";
-
+// ═══════════════════════════════════════════════════════════
+// POST /api/claude
+// Единственная точка входа — все запросы к Anthropic идут через сервер.
+// Ключ никогда не попадает в браузер.
+// ═══════════════════════════════════════════════════════════
 export async function POST(request: NextRequest) {
   try {
-    // Парсим тело запроса с валидацией типа
+    // ── 1. Rate limit ─────────────────────────────────────
+    const ip = getClientIp(request);
+    if (!checkRateLimit(ip)) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please wait a moment and try again." }),
+        { status: 429, headers: { "Content-Type": "application/json", "Retry-After": "60" } }
+      );
+    }
+
+    // ── 2. Body size guard ────────────────────────────────
+    const contentLength = request.headers.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > 10_000_000) {
+      return new Response(
+        JSON.stringify({ error: "Request too large. Maximum 10 MB." }),
+        { status: 413, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // ── 3. Parse body ─────────────────────────────────────
     const body: ClaudeRequestBody = await request.json();
     const { mode, data } = body;
 
-    // Проверка наличия обязательных полей
     if (!mode || !data) {
       return new Response(
         JSON.stringify({ error: "Missing required fields: mode and data" }),
@@ -44,19 +102,77 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Выбираем нужный промпт в зависимости от режима
-    let prompt: string;
+    // ── 4. Text field size validation ─────────────────────
+    const TEXT_FIELDS = ["jobDescription", "resume", "role", "requirements"] as const;
+    for (const key of TEXT_FIELDS) {
+      const val = (data as unknown as Record<string, unknown>)[key];
+      if (typeof val === "string" && val.length > MAX_TEXT_CHARS) {
+        return new Response(
+          JSON.stringify({ error: `Field "${key}" exceeds ${MAX_TEXT_CHARS} character limit.` }),
+          { status: 413, headers: { "Content-Type": "application/json" } }
+        );
+      }
+    }
+
+    // ── 5. Build message content ──────────────────────────
+    // Для обычных режимов — строка. Для PDF — массив content-блоков.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let messageContent: string | any[];
 
     switch (mode) {
-      case "cover-letter":
-        prompt = buildCoverLetterPrompt(data as Parameters<typeof buildCoverLetterPrompt>[0]);
+      // ─── Cover Letter ───────────────────────────────────
+      case "cover-letter": {
+        const clData = data as CoverLetterFormData;
+        if (clData.resumePdfBase64) {
+          if (clData.resumePdfBase64.length > MAX_PDF_B64_BYTES) {
+            return new Response(
+              JSON.stringify({ error: "PDF file is too large. Maximum 5 MB." }),
+              { status: 413, headers: { "Content-Type": "application/json" } }
+            );
+          }
+          messageContent = [
+            { type: "text", text: buildCoverLetterPromptForPDF(clData) },
+            {
+              type: "document",
+              source: { type: "base64", media_type: "application/pdf", data: clData.resumePdfBase64 },
+            },
+          ];
+        } else {
+          messageContent = buildCoverLetterPrompt(clData);
+        }
         break;
+      }
+
+      // ─── Job Description ────────────────────────────────
       case "job-description":
-        prompt = buildJobDescriptionPrompt(data as Parameters<typeof buildJobDescriptionPrompt>[0]);
+        messageContent = buildJobDescriptionPrompt(
+          data as Parameters<typeof buildJobDescriptionPrompt>[0]
+        );
         break;
-      case "resume-analyzer":
-        prompt = buildResumeAnalyzerPrompt(data as Parameters<typeof buildResumeAnalyzerPrompt>[0]);
+
+      // ─── Resume Analyzer ────────────────────────────────
+      case "resume-analyzer": {
+        const raData = data as ResumeAnalyzerFormData;
+        if (raData.resumePdfBase64) {
+          if (raData.resumePdfBase64.length > MAX_PDF_B64_BYTES) {
+            return new Response(
+              JSON.stringify({ error: "PDF file is too large. Maximum 5 MB." }),
+              { status: 413, headers: { "Content-Type": "application/json" } }
+            );
+          }
+          messageContent = [
+            { type: "text", text: buildResumeAnalyzerPromptForPDF(raData) },
+            {
+              type: "document",
+              source: { type: "base64", media_type: "application/pdf", data: raData.resumePdfBase64 },
+            },
+          ];
+        } else {
+          messageContent = buildResumeAnalyzerPrompt(raData);
+        }
         break;
+      }
+
       default:
         return new Response(
           JSON.stringify({ error: "Invalid mode" }),
@@ -64,40 +180,37 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    // Запускаем стриминг запрос к Anthropic API
+    // ── 6. Stream to Anthropic ────────────────────────────
     const stream = await anthropic.messages.stream({
       model: MODEL,
       max_tokens: MAX_TOKENS,
       messages: [
         {
           role: "user",
-          content: prompt,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          content: messageContent as any,
         },
       ],
     });
 
-    // ReadableStream — нативный Web API для стриминга данных
-    // Каждый чанк текста сразу отправляется в браузер
+    // ReadableStream — токены идут к пользователю сразу по мере генерации
     const readableStream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
-
         try {
           for await (const chunk of stream) {
-            // Обрабатываем только текстовые дельты (сами токены)
             if (
               chunk.type === "content_block_delta" &&
               chunk.delta.type === "text_delta"
             ) {
-              const text = chunk.delta.text;
-              // Кодируем строку в Uint8Array — формат для ReadableStream
-              controller.enqueue(encoder.encode(text));
+              controller.enqueue(encoder.encode(chunk.delta.text));
             }
           }
         } catch (streamError) {
-          // Передаём ошибку стрима в поток с префиксом для клиента
           controller.enqueue(
-            encoder.encode(`\n\n[ERROR]: ${streamError instanceof Error ? streamError.message : "Stream error"}`)
+            encoder.encode(
+              `\n\n[ERROR]: ${streamError instanceof Error ? streamError.message : "Stream error"}`
+            )
           );
         } finally {
           controller.close();
@@ -105,20 +218,19 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Возвращаем поток с правильными заголовками
     return new Response(readableStream, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
-        // Не кешировать — каждый запрос уникален
         "Cache-Control": "no-cache, no-store",
-        // Chunked transfer — данные идут кусками без Content-Length
         "Transfer-Encoding": "chunked",
+        // Запрещаем встраивание в iframe (защита от clickjacking)
+        "X-Frame-Options": "DENY",
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (error) {
     console.error("[API/claude] Error:", error);
 
-    // Определяем тип ошибки для понятного сообщения пользователю
     const errorMessage =
       error instanceof Anthropic.APIError
         ? `Anthropic API error: ${error.message}`

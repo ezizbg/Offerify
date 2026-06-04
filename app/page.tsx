@@ -74,9 +74,6 @@ export default function Home() {
         <span className={styles.footerLogo}>Offerify</span>
         <span className={styles.footerDot} aria-hidden="true">·</span>
         <span>© {new Date().getFullYear()} Eziz Berdiyev</span>
-        <span className={styles.footerDot} aria-hidden="true">·</span>
-        <a href="https://github.com/ezizbg/Offerify" target="_blank"
-          rel="noopener noreferrer" className={styles.footerLink}>GitHub</a>
       </footer>
     </div>
   );

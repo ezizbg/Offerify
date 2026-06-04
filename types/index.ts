@@ -16,6 +16,7 @@ export type StreamingStatus = "idle" | "loading" | "streaming" | "done" | "error
 export interface CoverLetterFormData {
   jobDescription: string;
   resume: string;
+  resumePdfBase64?: string; // base64-encoded PDF (без data: префикса)
 }
 
 // Данные формы Job Description Writer
@@ -28,6 +29,7 @@ export interface JobDescriptionFormData {
 export interface ResumeAnalyzerFormData {
   jobDescription: string;
   resume: string;
+  resumePdfBase64?: string; // base64-encoded PDF (без data: префикса)
 }
 
 // Тело запроса к API Route Handler
