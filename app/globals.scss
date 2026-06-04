@@ -175,12 +175,14 @@ body::after {
   border-radius: $r-sm;
 }
 
-// Accessibility: если анимации отключены — всё сразу видно
+// Accessibility: декоративные анимации отключаем, функциональные (спиннеры) — нет.
+// Анимационные свойства БЕЗ !important — класс-уровень (.spinner и пр.) свободно
+// их переопределяет. Transition делаем мгновенным — он чисто декоративный.
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-delay: 0ms !important;
-    animation-iteration-count: 1 !important;
+    animation-duration: 0.01ms;
+    animation-delay: 0ms;
+    animation-iteration-count: 1;
     transition-duration: 0.01ms !important;
   }
 }
