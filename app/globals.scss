@@ -144,6 +144,12 @@ body::after {
   100% { background-position:  200% center; }
 }
 
+// Skeleton shimmer — loading placeholder lines
+@keyframes skeletonShimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
 // Появление карточки с лёгкой пружиной
 @keyframes cardIn {
   from { opacity: 0; transform: translateY(10px) scale(0.98); }
