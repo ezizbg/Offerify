@@ -4,15 +4,14 @@
 // CSS CUSTOM PROPERTIES
 // ═══════════════════════════════════
 :root {
-  --accent:       #{$accent};
-  --accent-dim:   #{$accent-dim};
-  --border:       #{$border};
-  --text-1:       #{$text-1};
-  --text-2:       #{$text-2};
-  --text-3:       #{$text-3};
-  --r-md:         #{$r-md};
-  --r-lg:         #{$r-lg};
-  --ease-spring:  #{$ease-spring};
+  --accent:      #{$accent};
+  --accent-dim:  #{$accent-dim};
+  --border:      #{$border};
+  --text-1:      #{$text-1};
+  --text-2:      #{$text-2};
+  --text-3:      #{$text-3};
+  --r-md:        #{$r-md};
+  --r-lg:        #{$r-lg};
 }
 
 // ═══════════════════════════════════
@@ -34,83 +33,68 @@ html {
 
 body {
   font-family: $font;
-  background: $bg;
   color: $text-1;
   line-height: 1.6;
   min-height: 100vh;
-  position: relative;
-  isolation: isolate;
+
+  // Многослойный mesh-градиент фон — глубина без JS
+  background:
+    radial-gradient(ellipse 70% 55% at 15% 15%, rgba(108,99,255,0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 65% at 85% 85%, rgba(78,205,196,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 45% 40% at 70% 5%,  rgba(108,99,255,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 35% 50% at 5%  80%,  rgba(78,205,196,0.05) 0%, transparent 50%),
+    $bg;
+  background-attachment: fixed;
 }
 
-// ─── Анимированные фоновые орбы ──────────
-// CSS-only, не требуют JS, не влияют на layout
-// Создают ощущение глубины как у Linear/Vercel
-
+// ─── Шумовая текстура (noise) ────────────────
+// Делает дизайн дорогим — используется у Vercel, Linear, Stripe
+// CSS-only через SVG feTurbulence data URI
 body::before {
   content: '';
   position: fixed;
-  top: -30vh;
-  left: -20vw;
-  width: 80vw;
-  height: 80vh;
-  background: radial-gradient(circle,
-    rgba(108, 99, 255, 0.12) 0%,
-    rgba(108, 99, 255, 0.04) 40%,
-    transparent 70%
-  );
-  border-radius: 50%;
+  inset: 0;
+  z-index: 0;
   pointer-events: none;
-  z-index: -1;
-  animation: orbDrift1 22s ease-in-out infinite;
-  will-change: transform;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
 }
 
+// ─── Плавающий акцентный орб ─────────────────
+// Один медленный орб для дополнительной глубины
 body::after {
   content: '';
   position: fixed;
-  bottom: -20vh;
-  right: -15vw;
-  width: 70vw;
-  height: 70vh;
-  background: radial-gradient(circle,
-    rgba(78, 205, 196, 0.08) 0%,
-    rgba(78, 205, 196, 0.02) 40%,
-    transparent 70%
-  );
+  top: -20vh;
+  left: -10vw;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(108,99,255,0.09) 0%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
-  z-index: -1;
-  animation: orbDrift2 28s ease-in-out infinite;
+  z-index: 0;
+  animation: orbFloat 30s ease-in-out infinite;
   will-change: transform;
 }
 
 // ═══════════════════════════════════
 // KEYFRAMES
 // ═══════════════════════════════════
-
-// Медленное дрейфование орбов
-@keyframes orbDrift1 {
-  0%,100% { transform: translate(0, 0) scale(1); }
-  33%     { transform: translate(5vw, 4vh) scale(1.05); }
-  66%     { transform: translate(-3vw, 6vh) scale(0.95); }
+@keyframes orbFloat {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(6vw, 5vh) scale(1.06); }
+  66%     { transform: translate(-4vw, 8vh) scale(0.94); }
 }
 
-@keyframes orbDrift2 {
-  0%,100% { transform: translate(0, 0) scale(1); }
-  40%     { transform: translate(-4vw, -5vh) scale(1.08); }
-  70%     { transform: translate(3vw, -2vh) scale(0.96); }
-}
-
-// Анимированный градиент текста заголовка
 @keyframes gradientFlow {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-// Входящие анимации
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -119,17 +103,11 @@ body::after {
   to   { opacity: 1; }
 }
 
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-// Утилиты
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
@@ -149,16 +127,15 @@ body::after {
   40%           { transform: scale(1.1); opacity: 1; }
 }
 
-// SVG анимация логотипа
 @keyframes dashDraw {
   from { stroke-dashoffset: 57; }
   to   { stroke-dashoffset: 0; }
 }
 
-// Мерцание свечения (для активных элементов)
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(108, 99, 255, 0.15); }
-  50%       { box-shadow: 0 0 35px rgba(108, 99, 255, 0.30); }
+// Shine sweep — периодическое свечение на кнопках
+@keyframes shine {
+  0%     { transform: translateX(-100%) skewX(-15deg); }
+  20%,100%{ transform: translateX(300%) skewX(-15deg); }
 }
 
 // Shimmer для streaming border
@@ -167,32 +144,32 @@ body::after {
   100% { background-position:  200% center; }
 }
 
+// Появление карточки с лёгкой пружиной
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 // ═══════════════════════════════════
 // SCROLLBAR
 // ═══════════════════════════════════
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
-  border-radius: 3px;
-  &:hover { background: rgba(255,255,255,0.2); }
-}
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
 // ═══════════════════════════════════
 // SELECTION & FOCUS
 // ═══════════════════════════════════
-::selection {
-  background: rgba(108, 99, 255, 0.28);
-  color: $text-1;
-}
+::selection { background: rgba(108,99,255,0.28); color: $text-1; }
 
 :focus-visible {
-  outline: 2px solid rgba(108, 99, 255, 0.6);
+  outline: 2px solid rgba(108,99,255,0.6);
   outline-offset: 2px;
   border-radius: $r-sm;
 }
 
-// Если у пользователя отключены анимации — всё показывается сразу
+// Accessibility: если анимации отключены — всё сразу видно
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

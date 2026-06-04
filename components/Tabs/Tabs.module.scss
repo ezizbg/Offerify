@@ -3,92 +3,190 @@
 .container {
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 // ═══════════════════════════════════
-// SEGMENTED CONTROL
+// КАРТОЧКИ-ТАБЫ — 3 в ряд
+// Кликабельные карточки с иконками вместо скучного сегментированного контрола
 // ═══════════════════════════════════
-.nav {
-  position: relative;
+.cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  padding: 4px;
-  background: $glass-1;
-  border: 1px solid $border;
-  border-bottom: none;
-  border-radius: $r-lg $r-lg 0 0;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
+  gap: 10px;
 
-// Скользящий индикатор со свечением на активном табе
-.slider {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: calc((100% - 8px) / 3);
-  height: calc(100% - 8px);
-  background: $glass-3;
-  border: 1px solid $border-medium;
-  border-radius: calc(#{$r-lg} - 4px);
-  transform: translateX(calc(var(--active-index, 0) * 100%));
-  transition: transform 0.32s $ease-std;
-  pointer-events: none;
-  will-change: transform;
-
-  // Тонкое свечение снизу активного таба
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 20%;
-    width: 60%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, $accent, transparent);
-    border-radius: 2px;
-    opacity: 0.7;
+  @media (max-width: $bp-sm) {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 
-// ─── Tab button ─────────────────────
-.tab {
+// ─── Одна карточка ──────────────────
+.card {
   position: relative;
-  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1px solid $border;
+  border-radius: $r-lg;
+  background: $glass-1;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color $t-default $ease-std,
+    background $t-default $ease-std,
+    transform $t-fast $ease-spring,
+    box-shadow $t-default $ease-std;
+  overflow: hidden;
+
+  // Shine sweep при hover — проходит по карточке
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -60%;
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.04),
+      transparent
+    );
+    transform: skewX(-15deg);
+    transition: none;
+    pointer-events: none;
+  }
+
+  &:hover:not(.cardActive) {
+    border-color: $border-medium;
+    background: $glass-2;
+    transform: translateY(-2px);
+    box-shadow: $shadow-sm;
+
+    &::before {
+      animation: shine 0.6s ease forwards;
+    }
+  }
+
+  &:active { transform: translateY(0) scale(0.99); }
+
+  @media (max-width: $bp-md) {
+    padding: 14px 16px;
+  }
+}
+
+// Активная карточка — accent border + glow
+.cardActive {
+  border-color: rgba(108,99,255,0.5);
+  background: rgba(108,99,255,0.07);
+  box-shadow:
+    0 0 0 1px rgba(108,99,255,0.15),
+    0 8px 32px rgba(108,99,255,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+
+  &:hover {
+    transform: none;
+  }
+}
+
+// ─── Иконка ──────────────────────────
+.cardIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 11px 16px;
-  border: none;
-  background: transparent;
+  width: 40px;
+  height: 40px;
+  border-radius: $r-md;
+  background: $glass-2;
+  border: 1px solid $border;
   color: $text-3;
-  font-family: $font;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  border-radius: calc(#{$r-lg} - 4px);
-  transition: color $t-default $ease-out;
-  white-space: nowrap;
-  letter-spacing: -0.01em;
-
-  &:hover:not(.tabActive) { color: $text-2; }
-
-  @media (max-width: $bp-sm) {
-    font-size: 0.78rem;
-    padding: 9px 6px;
-  }
+  flex-shrink: 0;
+  transition: all $t-default $ease-std;
 }
 
-.tabActive {
-  color: $text-1;
+.cardIconActive {
+  background: rgba(108,99,255,0.15);
+  border-color: rgba(108,99,255,0.3);
+  color: $accent;
+}
+
+// ─── Текст ───────────────────────────
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.cardLabel {
+  display: block;
+  font-size: 0.88rem;
   font-weight: 600;
+  color: $text-2;
+  letter-spacing: -0.01em;
+  transition: color $t-fast;
+
+  .cardActive & { color: $text-1; }
 }
 
-// ─── Content panel ──────────────────
-.panels {
+.cardDesc {
+  display: block;
+  font-size: 0.75rem;
+  color: $text-4;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color $t-fast;
+
+  .cardActive & { color: $text-3; }
+
+  @media (max-width: $bp-sm) { display: none; }
+}
+
+// Активная точка в правом углу карточки
+.cardDot {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $accent;
+  box-shadow: 0 0 8px rgba(108,99,255,0.8);
+  animation: pulse 2s ease infinite;
+}
+
+// ═══════════════════════════════════
+// КОНТЕНТ-ПАНЕЛЬ
+// Стеклянный контейнер с accent glow сверху
+// ═══════════════════════════════════
+.panel {
   background: $glass-1;
   border: 1px solid $border;
-  border-radius: 0 0 $r-lg $r-lg;
+  border-radius: $r-lg;
   overflow: hidden;
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.05) inset,   // тонкий highlight сверху
+    0 24px 64px rgba(0,0,0,0.4);
+
+  // Тонкая accent полоска сверху панели
+  &::before {
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(108,99,255,0.4) 30%,
+      rgba(78,205,196,0.3) 70%,
+      transparent 100%
+    );
+  }
 }
