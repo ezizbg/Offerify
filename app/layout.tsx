@@ -1,41 +1,35 @@
 import type { Metadata } from "next";
 import "./globals.scss";
 
-// Метаданные — важны для SEO и превью в LinkedIn/GitHub
 export const metadata: Metadata = {
-  title: "HR AI Assistant — Cover Letters, Job Descriptions & Resume Analysis",
+  title: "Offerify — AI Hiring Suite",
   description:
-    "AI-powered tools for HR professionals and job seekers. Generate cover letters, write job descriptions, and analyze resume-to-job fit with Claude AI.",
-  keywords: ["HR tools", "AI cover letter", "resume analyzer", "job description writer", "Claude AI"],
+    "Cover letters, job descriptions, and resume analysis powered by Claude AI. Results in seconds.",
+  keywords: ["cover letter generator", "resume analyzer", "job description writer", "Claude AI", "HR tools"],
   authors: [{ name: "Eziz Berdiyev" }],
   openGraph: {
-    title: "HR AI Assistant",
-    description: "AI-powered HR tools built with Next.js 14 + Anthropic Claude",
+    title: "Offerify — AI Hiring Suite",
+    description: "AI-powered hiring tools built with Next.js + Anthropic Claude",
     type: "website",
   },
 };
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
+// Prevents flash of wrong theme — runs synchronously before first paint
+const themeScript = `(function(){try{var t=localStorage.getItem('theme');var s=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t||s);}catch(e){}})();`;
 
-// Root Layout — оборачивает всё приложение
-// В App Router layout.tsx НЕ перерендеривается при навигации — только children меняется
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google Fonts через link — быстрее чем next/font для сторонних шрифтов */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;1,14..32,400&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

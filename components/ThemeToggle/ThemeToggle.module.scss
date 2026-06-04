@@ -1,0 +1,31 @@
+@use "app/variables" as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: $r-sm;
+  border: 1px solid var(--br);
+  background: transparent;
+  color: var(--t3);
+  cursor: pointer;
+  transition:
+    color $t-fast $ease-std,
+    background $t-fast $ease-std,
+    border-color $t-fast $ease-std;
+
+  &:hover {
+    color: var(--t1);
+    background: var(--sf-2);
+    border-color: var(--br-2);
+  }
+
+  &:active { transform: scale(0.92); }
+}
+
+.placeholder {
+  width: 34px;
+  height: 34px;
+}

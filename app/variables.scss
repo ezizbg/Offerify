@@ -1,68 +1,31 @@
-// ═══════════════════════════════════
-// DESIGN TOKENS — Premium Dark SaaS
-// Вдохновение: Linear, Vercel, Raycast
-// ═══════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// DESIGN TOKENS — structural only (NO color variables)
+// Colors live in CSS custom properties in globals.scss
+// ═══════════════════════════════════════════════════════════
 
-// Фон — почти чёрный с едва уловимым синим оттенком
-$bg:         #07070c;
-$bg-surface: #0e0e16;   // поверхности
-$bg-raised:  #13131e;   // приподнятые элементы
+// ── Typography ──────────────────────────────────────────────
+$font:      -apple-system, BlinkMacSystemFont, 'Inter', 'Helvetica Neue', sans-serif;
+$font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
 
-// Акцент — один сильный цвет, используется точечно
-$accent:      #6c63ff;              // indigo-purple
-$accent-dim:  rgba(108, 99, 255, 0.18);
-$accent-glow: rgba(108, 99, 255, 0.35);
-$accent-2:    #4ecdc4;              // cyan — только для градиентов
-$accent-warm: rgba(108, 99, 255, 0.08);
-
-// Поверхности (стекло)
-$glass-1: rgba(255, 255, 255, 0.03);
-$glass-2: rgba(255, 255, 255, 0.055);
-$glass-3: rgba(255, 255, 255, 0.09);
-
-// Границы
-$border:        rgba(255, 255, 255, 0.08);
-$border-medium: rgba(255, 255, 255, 0.14);
-$border-strong: rgba(255, 255, 255, 0.22);
-$border-accent: rgba(108, 99, 255, 0.4);
-
-// Типографика — Apple F5F5F7 + opacity
-$text-1: #f5f5f7;
-$text-2: rgba(245, 245, 247, 0.62);
-$text-3: rgba(245, 245, 247, 0.36);
-$text-4: rgba(245, 245, 247, 0.18);
-
-// Семантика
-$success: #34d399;
-$error:   #f87171;
-
-// Шрифт
-$font:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-$font-mono: 'JetBrains Mono', 'SF Mono', monospace;
-
-// Скругления
+// ── Border radius ───────────────────────────────────────────
+$r-xs:   6px;
 $r-sm:   8px;
 $r-md:   12px;
 $r-lg:   18px;
 $r-xl:   24px;
 $r-pill: 980px;
 
-// Тени
-$shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.5);
-$shadow-md:  0 4px 20px rgba(0, 0, 0, 0.6);
-$shadow-glow: 0 0 40px rgba(108, 99, 255, 0.2);
-
-// Easing
-$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);  // пружина — для hover
+// ── Easing ──────────────────────────────────────────────────
+$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 $ease-out:    cubic-bezier(0, 0, 0.2, 1);
 $ease-std:    cubic-bezier(0.4, 0, 0.2, 1);
 
-// Переходы
-$t-fast:    140ms;
-$t-default: 240ms;
-$t-slow:    380ms;
+// ── Transitions ─────────────────────────────────────────────
+$t-fast:    130ms;
+$t-default: 220ms;
+$t-slow:    360ms;
 
-// Брейкпоинты
+// ── Breakpoints ─────────────────────────────────────────────
 $bp-sm: 480px;
 $bp-md: 768px;
 $bp-lg: 1024px;

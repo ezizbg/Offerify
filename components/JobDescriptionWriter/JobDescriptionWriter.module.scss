@@ -3,170 +3,169 @@
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 580px;
-  animation: fadeIn 0.3s $ease-out;
+  min-height: 540px;
+  animation: fadeIn 0.22s $ease-out;
 
   @media (max-width: $bp-sm) { grid-template-columns: 1fr; }
 }
 
 .formPanel {
-  padding: 32px;
-  border-right: 1px solid $border;
+  padding: 28px;
+  border-right: 1px solid var(--br);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 
   @media (max-width: $bp-sm) {
     border-right: none;
-    border-bottom: 1px solid $border;
-    padding: 24px 20px;
+    border-bottom: 1px solid var(--br);
+    padding: 22px 18px;
   }
 }
 
 .outputPanel {
-  padding: 32px;
-  @media (max-width: $bp-sm) { padding: 24px 20px; }
+  padding: 28px;
+  @media (max-width: $bp-sm) { padding: 22px 18px; }
 }
 
-.panelHeader { display: flex; flex-direction: column; gap: 6px; }
-.panelTitle  { font-size: 1rem; font-weight: 600; color: $text-1; letter-spacing: -0.02em; }
-.panelSub    { font-size: 0.83rem; color: $text-3; line-height: 1.55; }
+.panelHeader { display: flex; flex-direction: column; gap: 4px; }
+.panelTitle  { font-size: 0.92rem; font-weight: 600; color: var(--t1); letter-spacing: -0.02em; }
+.panelSub    { font-size: 0.80rem; color: var(--t3); line-height: 1.5; }
 
-.form  { display: flex; flex-direction: column; gap: 18px; flex: 1; }
-.field { display: flex; flex-direction: column; gap: 8px; }
+.form  { display: flex; flex-direction: column; gap: 16px; flex: 1; }
+.field { display: flex; flex-direction: column; gap: 6px; }
 
 .label {
-  font-size: 0.71rem;
+  font-size: 0.69rem;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: $text-3;
+  color: var(--t3);
 }
 
-.required { color: $accent; opacity: 0.7; }
+.required { color: var(--ac); }
 
-// Однострочный input для названия роли
 .input {
   width: 100%;
-  padding: 13px 15px;
-  background: $glass-2;
-  border: 1px solid $border;
-  border-radius: $r-md;
-  color: $text-1;
+  padding: 10px 12px;
+  background: var(--sf-2);
+  border: 1px solid var(--br);
+  border-radius: $r-sm;
+  color: var(--t1);
   font-family: $font;
-  font-size: 0.9rem;
-  transition: border-color $t-default $ease-out, background $t-default $ease-out, box-shadow $t-default $ease-out;
+  font-size: 0.85rem;
+  transition:
+    border-color $t-default $ease-std,
+    background $t-default $ease-std,
+    box-shadow $t-default $ease-std;
 
-  &::placeholder { color: $text-4; }
-  &:focus { outline: none; border-color: rgba(108,99,255,0.5); box-shadow: 0 0 0 3px rgba(108,99,255,0.10); }
-  &:hover:not(:focus):not(:disabled) { border-color: $border-medium; }
-  &:disabled { opacity: 0.45; cursor: not-allowed; }
+  &::placeholder { color: var(--t4); }
+  &:focus { outline: none; border-color: var(--ac-50); box-shadow: 0 0 0 3px var(--ac-10); }
+  &:hover:not(:focus):not(:disabled) { border-color: var(--br-2); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
 }
 
 .textarea {
   width: 100%;
-  padding: 13px 15px;
-  background: $glass-2;
-  border: 1px solid $border;
-  border-radius: $r-md;
-  color: $text-1;
+  padding: 10px 12px;
+  background: var(--sf-2);
+  border: 1px solid var(--br);
+  border-radius: $r-sm;
+  color: var(--t1);
   font-family: $font;
-  font-size: 0.88rem;
-  line-height: 1.65;
+  font-size: 0.85rem;
+  line-height: 1.6;
   resize: vertical;
   transition:
-    border-color $t-default $ease-out,
-    background $t-default $ease-out,
-    box-shadow $t-default $ease-out;
+    border-color $t-default $ease-std,
+    background $t-default $ease-std,
+    box-shadow $t-default $ease-std;
 
-  &::placeholder { color: $text-4; }
+  &::placeholder { color: var(--t4); }
 
   &:focus {
     outline: none;
-    border-color: rgba(108, 99, 255, 0.5);
-    background: $glass-2;
-    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.10);
+    border-color: var(--ac-50);
+    box-shadow: 0 0 0 3px var(--ac-10);
   }
 
-  &:hover:not(:focus):not(:disabled) { border-color: $border-medium; }
-  &:disabled { opacity: 0.45; cursor: not-allowed; resize: none; }
+  &:hover:not(:focus):not(:disabled) { border-color: var(--br-2); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; resize: none; }
 }
 
 .charCount {
   align-self: flex-end;
-  font-size: 0.69rem;
-  color: $text-4;
+  font-size: 0.68rem;
+  color: var(--t4);
   font-variant-numeric: tabular-nums;
 }
 
 .actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-// Градиентная кнопка со shine
 .submitBtn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 24px;
+  padding: 10px 22px;
   border-radius: $r-pill;
   border: none;
-  background: linear-gradient(135deg, $accent 0%, mix($accent, $accent-2, 60%) 100%);
+  background: var(--ac);
   color: #fff;
   font-family: $font;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   position: relative;
   overflow: hidden;
-  transition: transform $t-fast $ease-spring, box-shadow $t-default $ease-out, opacity $t-fast;
+  transition:
+    transform $t-fast $ease-spring,
+    box-shadow $t-default $ease-out,
+    opacity $t-fast;
 
   &::after {
     content: '';
     position: absolute;
     top: 0; left: -60%;
     width: 40%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
     transform: skewX(-15deg);
-    animation: shine 3.5s ease infinite 2s;
+    animation: shine 4s ease infinite 1.5s;
     pointer-events: none;
   }
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.45);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--ac-30);
   }
 
-  &:active:not(:disabled) { transform: translateY(0) scale(0.98); }
-
+  &:active:not(:disabled) { transform: translateY(0) scale(0.97); }
   &:disabled { opacity: 0.35; cursor: not-allowed; }
+  &:disabled::after { display: none; }
 }
-
-// Spinner removed — replaced with SVG <Spinner /> component (animateTransform,
-// immune to CSS prefers-reduced-motion and disabled-button rendering quirks)
 
 .resetBtn {
   display: inline-flex;
   align-items: center;
-  padding: 11px 18px;
+  padding: 10px 18px;
   border-radius: $r-pill;
-  border: 1px solid $border;
+  border: 1px solid var(--br);
   background: transparent;
-  color: $text-3;
+  color: var(--t3);
   font-family: $font;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
   transition:
-    border-color $t-fast $ease-out,
-    color $t-fast $ease-out,
-    background $t-fast $ease-out;
+    border-color $t-fast $ease-std,
+    color $t-fast $ease-std,
+    background $t-fast $ease-std;
   animation: fadeIn 0.2s $ease-out;
 
   &:hover:not(:disabled) {
-    border-color: $border-medium;
-    color: $text-1;
-    background: $glass-2;
+    border-color: var(--br-2);
+    color: var(--t1);
+    background: var(--sf-2);
   }
-
   &:disabled { opacity: 0.35; cursor: not-allowed; }
 }

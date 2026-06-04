@@ -3,105 +3,89 @@
 .wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: 580px;
-  animation: fadeIn 0.3s $ease-out;
+  min-height: 540px;
+  animation: fadeIn 0.22s $ease-out;
 
   @media (max-width: $bp-sm) { grid-template-columns: 1fr; }
 }
 
 .formPanel {
-  padding: 32px;
-  border-right: 1px solid $border;
+  padding: 28px;
+  border-right: 1px solid var(--br);
   display: flex;
   flex-direction: column;
   gap: 20px;
 
   @media (max-width: $bp-sm) {
     border-right: none;
-    border-bottom: 1px solid $border;
-    padding: 24px 20px;
+    border-bottom: 1px solid var(--br);
+    padding: 22px 18px;
   }
 }
 
 .outputPanel {
-  padding: 32px;
-  @media (max-width: $bp-sm) { padding: 24px 20px; }
+  padding: 28px;
+  @media (max-width: $bp-sm) { padding: 22px 18px; }
 }
 
-.panelHeader { display: flex; flex-direction: column; gap: 6px; }
-.panelTitle  { font-size: 1rem; font-weight: 600; color: $text-1; letter-spacing: -0.02em; }
-.panelSub    { font-size: 0.83rem; color: $text-3; line-height: 1.55; }
-
-// Теги-пиллы — что входит в анализ
-.features { display: flex; gap: 6px; flex-wrap: wrap; }
-
-.featureTag {
-  padding: 4px 11px;
-  border: 1px solid $border;
-  border-radius: $r-pill;
-  font-size: 0.71rem;
-  font-weight: 500;
-  color: $text-3;
-  letter-spacing: 0.01em;
-  transition: color $t-fast, border-color $t-fast, background $t-fast;
-
-  &:hover {
-    color: $text-2;
-    border-color: $border-medium;
-    background: $glass-2;
-  }
-}
+.panelHeader { display: flex; flex-direction: column; gap: 4px; }
+.panelTitle  { font-size: 0.92rem; font-weight: 600; color: var(--t1); letter-spacing: -0.02em; }
+.panelSub    { font-size: 0.80rem; color: var(--t3); line-height: 1.5; }
 
 .form  { display: flex; flex-direction: column; gap: 16px; flex: 1; }
-.field { display: flex; flex-direction: column; gap: 8px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
 
 .label {
-  font-size: 0.71rem;
+  font-size: 0.69rem;
   font-weight: 600;
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  color: $text-3;
+  color: var(--t3);
 }
 
-.required { color: $accent; opacity: 0.7; }
+.required { color: var(--ac); }
 
 .textarea {
   width: 100%;
-  padding: 13px 15px;
-  background: $glass-2;
-  border: 1px solid $border;
-  border-radius: $r-md;
-  color: $text-1;
+  padding: 10px 12px;
+  background: var(--sf-2);
+  border: 1px solid var(--br);
+  border-radius: $r-sm;
+  color: var(--t1);
   font-family: $font;
-  font-size: 0.88rem;
-  line-height: 1.65;
+  font-size: 0.85rem;
+  line-height: 1.6;
   resize: vertical;
   transition:
-    border-color $t-default $ease-out,
-    background $t-default $ease-out,
-    box-shadow $t-default $ease-out;
+    border-color $t-default $ease-std,
+    background $t-default $ease-std,
+    box-shadow $t-default $ease-std;
 
-  &::placeholder { color: $text-4; }
-  &:focus { outline: none; border-color: rgba(108,99,255,0.5); box-shadow: 0 0 0 3px rgba(108,99,255,0.10); }
-  &:hover:not(:focus):not(:disabled) { border-color: $border-medium; }
-  &:disabled { opacity: 0.45; cursor: not-allowed; resize: none; }
+  &::placeholder { color: var(--t4); }
+
+  &:focus {
+    outline: none;
+    border-color: var(--ac-50);
+    box-shadow: 0 0 0 3px var(--ac-10);
+  }
+
+  &:hover:not(:focus):not(:disabled) { border-color: var(--br-2); }
+  &:disabled { opacity: 0.4; cursor: not-allowed; resize: none; }
 }
 
 .charCount {
-  font-size: 0.69rem;
-  color: $text-4;
+  align-self: flex-end;
+  font-size: 0.68rem;
+  color: var(--t4);
   font-variant-numeric: tabular-nums;
 }
 
-// ═══════════════════════════════════
-// PDF UPLOAD ZONE
-// ═══════════════════════════════════
 .uploadZone {
   position: relative;
-  padding: 20px 18px;
-  border: 1.5px dashed $border-medium;
-  border-radius: $r-md;
-  background: $glass-1;
+  padding: 18px 16px;
+  border: 1.5px dashed var(--br-2);
+  border-radius: $r-sm;
+  background: var(--sf-1);
   cursor: pointer;
   outline: none;
   transition:
@@ -110,50 +94,39 @@
     box-shadow $t-default $ease-std;
 
   &:hover:not(.uploadZoneDisabled):not(.uploadZoneFilled) {
-    border-color: rgba(108,99,255,0.4);
-    background: $glass-2;
+    border-color: var(--ac-50);
+    background: var(--sf-2);
   }
   &:focus-visible {
-    border-color: rgba(108,99,255,0.5);
-    box-shadow: 0 0 0 3px rgba(108,99,255,0.10);
+    border-color: var(--ac-50);
+    box-shadow: 0 0 0 3px var(--ac-10);
   }
 }
 
 .uploadZoneDrag {
   border-style: solid;
-  border-color: $accent;
-  background: rgba(108,99,255,0.07);
-  box-shadow: 0 0 0 3px rgba(108,99,255,0.12);
+  border-color: var(--ac);
+  background: var(--ac-10);
+  box-shadow: 0 0 0 3px var(--ac-10);
 }
-.uploadZoneFilled  { border-style: solid; border-color: $border-medium; cursor: default; }
-.uploadZoneDisabled { opacity: 0.45; pointer-events: none; }
+.uploadZoneFilled   { border-style: solid; border-color: var(--br-2); cursor: default; }
+.uploadZoneDisabled { opacity: 0.4; pointer-events: none; }
 
 .uploadEmpty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 8px 0;
+  gap: 5px;
+  padding: 6px 0;
   pointer-events: none;
 }
 
-.uploadIcon {
-  color: $text-4;
-  transition: color $t-fast;
-  .uploadZone:hover & { color: $text-3; }
-  .uploadZoneDrag & { color: $accent; }
-}
+.uploadIcon  { color: var(--t4); transition: color $t-fast; .uploadZone:hover & { color: var(--t3); } .uploadZoneDrag & { color: var(--ac); } }
+.uploadLabel { font-size: 0.82rem; font-weight: 500; color: var(--t2); }
+.uploadHint  { font-size: 0.71rem; color: var(--t4); }
 
-.uploadLabel { font-size: 0.84rem; font-weight: 500; color: $text-2; }
-.uploadHint  { font-size: 0.73rem; color: $text-4; }
-
-.uploadFilled {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.uploadFileIcon { color: $accent; flex-shrink: 0; }
+.uploadFilled   { display: flex; align-items: center; gap: 10px; }
+.uploadFileIcon { color: var(--ac); flex-shrink: 0; }
 
 .uploadFileInfo {
   display: flex;
@@ -164,55 +137,51 @@
 }
 
 .uploadFileName {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  color: $text-1;
+  color: var(--t1);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.uploadFileSize { font-size: 0.72rem; color: $text-3; }
+.uploadFileSize { font-size: 0.71rem; color: var(--t3); }
 
 .uploadRemove {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px; height: 26px;
+  width: 24px; height: 24px;
   border-radius: 50%;
-  border: 1px solid $border;
+  border: 1px solid var(--br);
   background: transparent;
-  color: $text-3;
+  color: var(--t3);
   cursor: pointer;
   flex-shrink: 0;
   transition: border-color $t-fast, color $t-fast, background $t-fast;
 
   &:hover:not(:disabled) {
-    border-color: rgba(255,80,80,0.4);
-    color: #ff6b6b;
-    background: rgba(255,80,80,0.08);
+    border-color: var(--err-20);
+    color: var(--err);
+    background: var(--err-10);
   }
 }
 
-.uploadError {
-  font-size: 0.73rem;
-  color: #ff6b6b;
-  padding-top: 2px;
-}
+.uploadError { font-size: 0.72rem; color: var(--err); padding-top: 2px; }
 
 .modeToggle {
   background: none;
   border: none;
   padding: 0;
   font-family: $font;
-  font-size: 0.73rem;
-  color: $text-4;
+  font-size: 0.72rem;
+  color: var(--t4);
   cursor: pointer;
   text-decoration: underline;
   text-decoration-color: transparent;
   transition: color $t-fast, text-decoration-color $t-fast;
   align-self: flex-start;
 
-  &:hover { color: $accent; text-decoration-color: rgba(108,99,255,0.5); }
+  &:hover { color: var(--ac); text-decoration-color: var(--ac-30); }
 }
 
 .textModeRow {
@@ -227,58 +196,86 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 24px;
+  padding: 10px 22px;
   border-radius: $r-pill;
   border: none;
-  background: linear-gradient(135deg, $accent 0%, mix($accent, $accent-2, 60%) 100%);
+  background: var(--ac);
   color: #fff;
   font-family: $font;
-  font-size: 0.88rem;
+  font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   position: relative;
   overflow: hidden;
-  transition: transform $t-fast $ease-spring, box-shadow $t-default $ease-out, opacity $t-fast;
+  transition:
+    transform $t-fast $ease-spring,
+    box-shadow $t-default $ease-out,
+    opacity $t-fast;
 
   &::after {
     content: '';
     position: absolute;
     top: 0; left: -60%;
     width: 40%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
     transform: skewX(-15deg);
-    animation: shine 3.5s ease infinite 2.5s;
+    animation: shine 4s ease infinite 1.5s;
     pointer-events: none;
   }
 
   &:hover:not(:disabled) {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 8px 32px rgba(108, 99, 255, 0.45);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px var(--ac-30);
   }
-  &:active:not(:disabled) { transform: translateY(0) scale(0.98); }
+
+  &:active:not(:disabled) { transform: translateY(0) scale(0.97); }
   &:disabled { opacity: 0.35; cursor: not-allowed; }
   &:disabled::after { display: none; }
 }
 
-// Spinner removed — replaced with SVG <Spinner /> component (animateTransform,
-// immune to CSS prefers-reduced-motion and disabled-button rendering quirks)
-
 .resetBtn {
   display: inline-flex;
   align-items: center;
-  padding: 11px 18px;
+  padding: 10px 18px;
   border-radius: $r-pill;
-  border: 1px solid $border;
+  border: 1px solid var(--br);
   background: transparent;
-  color: $text-3;
+  color: var(--t3);
   font-family: $font;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
-  transition: border-color $t-fast $ease-out, color $t-fast $ease-out, background $t-fast $ease-out;
+  transition:
+    border-color $t-fast $ease-std,
+    color $t-fast $ease-std,
+    background $t-fast $ease-std;
   animation: fadeIn 0.2s $ease-out;
 
-  &:hover:not(:disabled) { border-color: $border-medium; color: $text-1; background: $glass-2; }
+  &:hover:not(:disabled) {
+    border-color: var(--br-2);
+    color: var(--t1);
+    background: var(--sf-2);
+  }
   &:disabled { opacity: 0.35; cursor: not-allowed; }
+}
+
+// ─── Feature tags (ResumeAnalyzer specific) ───────────────
+.features { display: flex; gap: 6px; flex-wrap: wrap; }
+
+.featureTag {
+  padding: 3px 10px;
+  border: 1px solid var(--br);
+  border-radius: $r-pill;
+  font-size: 0.70rem;
+  font-weight: 500;
+  color: var(--t3);
+  letter-spacing: 0.01em;
+  transition: color $t-fast, border-color $t-fast, background $t-fast;
+
+  &:hover {
+    color: var(--t2);
+    border-color: var(--br-2);
+    background: var(--sf-2);
+  }
 }

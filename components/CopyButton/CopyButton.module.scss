@@ -6,24 +6,24 @@
   gap: 6px;
   padding: 6px 13px;
   border-radius: $r-pill;
-  border: 1px solid $border;
+  border: 1px solid var(--br);
   background: transparent;
-  color: $text-3;
+  color: var(--t3);
   font-family: $font;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   transition:
-    border-color $t-fast $ease-out,
-    color $t-fast $ease-out,
-    background $t-fast $ease-out,
+    border-color $t-fast $ease-std,
+    color $t-fast $ease-std,
+    background $t-fast $ease-std,
     transform $t-fast $ease-spring;
 
   &:hover:not(:disabled) {
-    border-color: $border-medium;
-    color: $text-1;
-    background: $glass-2;
+    border-color: var(--br-2);
+    color: var(--t1);
+    background: var(--sf-2);
     transform: scale(1.03);
   }
 
@@ -31,14 +31,14 @@
 }
 
 .success {
-  border-color: rgba(52, 211, 153, 0.35) !important;
-  color: $success !important;
-  background: rgba(52, 211, 153, 0.07) !important;
+  border-color: var(--ok-15) !important;
+  color: var(--ok) !important;
+  background: var(--ok-15) !important;
 }
 
 .error {
-  border-color: rgba(248, 113, 113, 0.35) !important;
-  color: $error !important;
+  border-color: var(--err-20) !important;
+  color: var(--err) !important;
 }
 
 .icon  { display: flex; align-items: center; flex-shrink: 0; }

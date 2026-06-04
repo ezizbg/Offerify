@@ -1,30 +1,29 @@
 @use "app/variables" as *;
 
-// ─── Empty ──────────────────────────────
+// ─── Empty state ─────────────────────────────────────────
 .empty {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  min-height: 300px;
+  gap: 12px;
+  min-height: 280px;
   padding: 40px 24px;
-  animation: fadeIn 0.35s $ease-out both;
+  animation: fadeIn 0.3s $ease-out both;
 }
 
-.emptyIcon { color: $text-4; }
+.emptyIcon { color: var(--t4); }
 
 .emptyText {
-  font-size: 0.85rem;
-  color: $text-4;
+  font-size: 0.83rem;
+  color: var(--t4);
   text-align: center;
   line-height: 1.5;
 }
 
-// ─── Skeleton Loading ────────────────────
+// ─── Skeleton Loading ─────────────────────────────────────
 .outputLoading {
-  border-color: rgba(108,99,255,0.25);
-  animation: fadeIn 0.2s $ease-out;
+  border-color: var(--ac-30);
 
   &::before {
     content: '';
@@ -33,26 +32,21 @@
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(108,99,255,0.5),
-      rgba(78,205,196,0.4),
-      rgba(108,99,255,0.5),
+      var(--ac-50),
+      var(--ac-30),
+      var(--ac-50),
       transparent
     );
     background-size: 200% auto;
-    animation: borderShimmer 2s linear infinite;
-    // Functional animation — override reduced motion
-    @media (prefers-reduced-motion: reduce) {
-      animation-duration: 2s !important;
-      animation-iteration-count: infinite !important;
-    }
+    animation: borderShimmer 2s linear infinite !important;
   }
 }
 
 .skeleton {
-  padding: 16px 20px 24px;
+  padding: 20px 24px 28px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
 }
 
 .skeletonGroup {
@@ -62,54 +56,50 @@
 }
 
 .skeletonLine {
-  height: 11px;
+  height: 10px;
   border-radius: 6px;
   background: linear-gradient(
     90deg,
-    $glass-2 0%,
-    $glass-3 40%,
-    rgba(255,255,255,0.11) 50%,
-    $glass-3 60%,
-    $glass-2 100%
+    var(--sf-2) 0%,
+    var(--sf-3) 40%,
+    var(--sp)   50%,
+    var(--sf-3) 60%,
+    var(--sf-2) 100%
   );
   background-size: 250% auto;
-  animation: skeletonShimmer 1.8s ease-in-out infinite;
+  animation: skeletonShimmer 1.8s ease-in-out infinite !important;
   will-change: background-position;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation-duration: 1.8s !important;
-    animation-iteration-count: infinite !important;
-  }
 }
 
-// ─── Error ───────────────────────────────
+// ─── Error ───────────────────────────────────────────────
 .errorWrap {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 18px;
   border-radius: $r-md;
-  background: rgba(248, 113, 113, 0.06);
-  border: 1px solid rgba(248, 113, 113, 0.2);
+  background: var(--err-10);
+  border: 1px solid var(--err-20);
   animation: slideUp 0.3s $ease-out both;
 }
 
-.errorIcon  { color: $error; flex-shrink: 0; margin-top: 2px; }
-.errorTitle { font-size: 0.9rem; font-weight: 600; color: $error; margin-bottom: 4px; }
-.errorMsg   { font-size: 0.82rem; color: rgba(248,113,113,0.75); line-height: 1.55; word-break: break-word; }
+.errorIcon  { color: var(--err); flex-shrink: 0; margin-top: 2px; }
+.errorTitle { font-size: 0.88rem; font-weight: 600; color: var(--err); margin-bottom: 4px; }
+.errorMsg   { font-size: 0.81rem; color: var(--t2); line-height: 1.55; word-break: break-word; }
 
-// ─── Output container ────────────────────
+// ─── Output container ─────────────────────────────────────
 .output {
   border-radius: $r-md;
-  border: 1px solid $border;
-  background: $glass-1;
+  border: 1px solid var(--br);
+  background: var(--sf-1);
   overflow: hidden;
   animation: slideUp 0.3s $ease-out both;
+  transition: border-color $t-default;
 }
 
 .outputStreaming {
-  border-color: $border-accent;
-  box-shadow: 0 0 0 1px rgba(108,99,255,0.08), 0 0 48px rgba(108,99,255,0.08);
+  border-color: var(--ac-30);
+  box-shadow: 0 0 0 1px var(--ac-10), 0 0 32px var(--ac-10);
 
   &::before {
     content: '';
@@ -118,30 +108,25 @@
     background: linear-gradient(
       90deg,
       transparent,
-      $accent,
-      $accent-2,
-      $accent,
+      var(--ac),
+      var(--ac-50),
+      var(--ac),
       transparent
     );
     background-size: 200% auto;
-    animation: borderShimmer 2s linear infinite;
-
-    @media (prefers-reduced-motion: reduce) {
-      animation-duration: 2s !important;
-      animation-iteration-count: infinite !important;
-    }
+    animation: borderShimmer 2s linear infinite !important;
   }
 }
 
-.outputDone { border-color: $border; }
+.outputDone { border-color: var(--br); }
 
-// ─── Header ──────────────────────────────
+// ─── Output header ───────────────────────────────────────
 .outputHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  border-bottom: 1px solid $border;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--br);
   min-height: 42px;
   gap: 10px;
 }
@@ -150,139 +135,119 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 500;
 }
 
-.streamingBadge { color: $text-3; }
-.doneBadge      { color: $success; }
+.streamingBadge { color: var(--t3); }
+.doneBadge      { color: var(--ok); }
 
 .streamingDot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: $accent;
-  box-shadow: 0 0 6px rgba(108,99,255,0.7);
-  animation: pulse 1s ease infinite;
+  background: var(--ac);
+  box-shadow: 0 0 6px var(--ac-50);
+  animation: pulse 1.2s ease infinite !important;
   flex-shrink: 0;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation-duration: 1s !important;
-    animation-iteration-count: infinite !important;
-  }
 }
 
 .doneIcon { display: flex; align-items: center; }
 
-// ─── Content area ────────────────────────
+// ─── Content area ────────────────────────────────────────
 .outputContent {
   padding: 20px;
   max-height: 58vh;
   overflow-y: auto;
 }
 
-// ─── Markdown rendered output ─────────────
+// ─── Markdown ─────────────────────────────────────────────
 .markdown {
   font-family: $font;
-  font-size: 0.9rem;
-  color: $text-1;
-  line-height: 1.8;
+  font-size: 0.88rem;
+  color: var(--t1);
+  line-height: 1.75;
   word-break: break-word;
 
-  // Paragraphs
   p {
-    margin-bottom: 14px;
-    color: $text-1;
+    margin-bottom: 12px;
+    color: var(--t1);
     &:last-child { margin-bottom: 0; }
   }
 
-  // Headings
   h1, h2 {
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 700;
-    color: $text-1;
+    color: var(--t1);
     letter-spacing: -0.01em;
     margin-top: 20px;
     margin-bottom: 8px;
     padding-bottom: 6px;
-    border-bottom: 1px solid $border;
+    border-bottom: 1px solid var(--br);
     &:first-child { margin-top: 0; }
   }
 
   h3, h4 {
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 600;
-    color: $text-1;
-    margin-top: 16px;
+    color: var(--t1);
+    margin-top: 14px;
     margin-bottom: 6px;
     &:first-child { margin-top: 0; }
   }
 
-  // Bold & italic
-  strong { font-weight: 700; color: $text-1; }
-  em     { font-style: italic; color: $text-2; }
+  strong { font-weight: 700; color: var(--t1); }
+  em     { font-style: italic; color: var(--t2); }
 
-  // Lists
   ul, ol {
-    padding-left: 20px;
+    padding-left: 18px;
     margin-bottom: 12px;
     &:last-child { margin-bottom: 0; }
   }
 
   li {
-    margin-bottom: 5px;
-    color: $text-1;
-    line-height: 1.7;
+    margin-bottom: 4px;
+    color: var(--t1);
+    line-height: 1.65;
   }
 
-  // Nested lists
   li > ul, li > ol { margin-top: 4px; margin-bottom: 4px; }
 
-  // Horizontal rule
   hr {
     border: none;
-    border-top: 1px solid $border;
-    margin: 16px 0;
+    border-top: 1px solid var(--br);
+    margin: 14px 0;
   }
 
-  // Inline code
   code {
-    background: $glass-3;
-    border: 1px solid $border;
+    background: var(--sf-2);
+    border: 1px solid var(--br);
     border-radius: 4px;
     padding: 1px 5px;
     font-family: $font-mono;
     font-size: 0.82em;
-    color: $accent-2;
+    color: var(--ac);
   }
 
-  // Blockquote
   blockquote {
-    border-left: 2px solid $border-accent;
+    border-left: 2px solid var(--ac-30);
     padding-left: 12px;
     margin: 0 0 12px;
-    color: $text-2;
+    color: var(--t2);
   }
 }
 
-// During streaming: text fades in
 .markdownStreaming {
   p:last-child { animation: fadeIn 0.15s $ease-out; }
 }
 
-// Blinking cursor — inline after last content
 .cursor {
   display: inline-block;
   width: 2px;
   height: 1em;
-  background: $accent;
+  background: var(--ac);
   margin-left: 2px;
   vertical-align: text-bottom;
   border-radius: 1px;
-  animation: blink 0.8s ease infinite;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation-duration: 0.8s !important;
-    animation-iteration-count: infinite !important;
-  }
+  animation: blink 0.8s ease infinite !important;
 }

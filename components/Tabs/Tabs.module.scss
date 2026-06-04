@@ -3,190 +3,70 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 // ═══════════════════════════════════
-// КАРТОЧКИ-ТАБЫ — 3 в ряд
-// Кликабельные карточки с иконками вместо скучного сегментированного контрола
+// TAB BAR — clean underline style
 // ═══════════════════════════════════
-.cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+.tabBar {
+  display: flex;
+  border-bottom: 1px solid var(--br);
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 13px 20px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  color: var(--t3);
+  font-family: $font;
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color $t-fast $ease-std,
+    border-color $t-fast $ease-std;
+
+  &:hover:not(.tabActive) { color: var(--t2); }
 
   @media (max-width: $bp-sm) {
-    grid-template-columns: 1fr;
-    gap: 8px;
+    padding: 11px 14px;
+    font-size: 0.79rem;
   }
 }
 
-// ─── Одна карточка ──────────────────
-.card {
-  position: relative;
+.tabActive {
+  color: var(--t1);
+  border-bottom-color: var(--ac);
+}
+
+.tabIcon {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 18px;
-  border: 1px solid $border;
-  border-radius: $r-lg;
-  background: $glass-1;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  cursor: pointer;
-  text-align: left;
-  transition:
-    border-color $t-default $ease-std,
-    background $t-default $ease-std,
-    transform $t-fast $ease-spring,
-    box-shadow $t-default $ease-std;
-  overflow: hidden;
-
-  // Shine sweep при hover — проходит по карточке
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -60%;
-    width: 40%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255,255,255,0.04),
-      transparent
-    );
-    transform: skewX(-15deg);
-    transition: none;
-    pointer-events: none;
-  }
-
-  &:hover:not(.cardActive) {
-    border-color: $border-medium;
-    background: $glass-2;
-    transform: translateY(-2px);
-    box-shadow: $shadow-sm;
-
-    &::before {
-      animation: shine 0.6s ease forwards;
-    }
-  }
-
-  &:active { transform: translateY(0) scale(0.99); }
-
-  @media (max-width: $bp-md) {
-    padding: 14px 16px;
-  }
-}
-
-// Активная карточка — accent border + glow
-.cardActive {
-  border-color: rgba(108,99,255,0.5);
-  background: rgba(108,99,255,0.07);
-  box-shadow:
-    0 0 0 1px rgba(108,99,255,0.15),
-    0 8px 32px rgba(108,99,255,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-
-  &:hover {
-    transform: none;
-  }
-}
-
-// ─── Иконка ──────────────────────────
-.cardIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: $r-md;
-  background: $glass-2;
-  border: 1px solid $border;
-  color: $text-3;
   flex-shrink: 0;
-  transition: all $t-default $ease-std;
+
+  @media (max-width: 400px) { display: none; }
 }
 
-.cardIconActive {
-  background: rgba(108,99,255,0.15);
-  border-color: rgba(108,99,255,0.3);
-  color: $accent;
-}
-
-// ─── Текст ───────────────────────────
-.cardBody {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  min-width: 0;
-}
-
-.cardLabel {
-  display: block;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: $text-2;
-  letter-spacing: -0.01em;
-  transition: color $t-fast;
-
-  .cardActive & { color: $text-1; }
-}
-
-.cardDesc {
-  display: block;
-  font-size: 0.75rem;
-  color: $text-4;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color $t-fast;
-
-  .cardActive & { color: $text-3; }
-
-  @media (max-width: $bp-sm) { display: none; }
-}
-
-// Активная точка в правом углу карточки
-.cardDot {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: $accent;
-  box-shadow: 0 0 8px rgba(108,99,255,0.8);
-  animation: pulse 2s ease infinite;
-}
+.tabLabel { line-height: 1; }
 
 // ═══════════════════════════════════
-// КОНТЕНТ-ПАНЕЛЬ
-// Стеклянный контейнер с accent glow сверху
+// PANEL — clean bordered card
 // ═══════════════════════════════════
 .panel {
-  background: $glass-1;
-  border: 1px solid $border;
-  border-radius: $r-lg;
+  border: 1px solid var(--br);
+  border-top: none;
+  border-radius: 0 0 $r-lg $r-lg;
+  background: var(--sf-1);
   overflow: hidden;
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.05) inset,   // тонкий highlight сверху
-    0 24px 64px rgba(0,0,0,0.4);
-
-  // Тонкая accent полоска сверху панели
-  &::before {
-    content: '';
-    display: block;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(108,99,255,0.4) 30%,
-      rgba(78,205,196,0.3) 70%,
-      transparent 100%
-    );
-  }
+  box-shadow: var(--sh-md);
 }

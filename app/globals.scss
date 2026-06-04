@@ -1,17 +1,90 @@
 @use "variables" as *;
 
-// ═══════════════════════════════════
-// CSS CUSTOM PROPERTIES
-// ═══════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+// DESIGN TOKENS — Vercel-inspired
+// dark = default, light = [data-theme="light"]
+// ═══════════════════════════════════════════════════════════
 :root {
-  --accent:      #{$accent};
-  --accent-dim:  #{$accent-dim};
-  --border:      #{$border};
-  --text-1:      #{$text-1};
-  --text-2:      #{$text-2};
-  --text-3:      #{$text-3};
-  --r-md:        #{$r-md};
-  --r-lg:        #{$r-lg};
+  // ── Background ────────────────────────────────────────────
+  --bg:   #000000;
+  --bg-2: #0A0A0A;
+
+  // ── Surfaces ──────────────────────────────────────────────
+  --sf-1: rgba(255,255,255,0.04);
+  --sf-2: rgba(255,255,255,0.07);
+  --sf-3: rgba(255,255,255,0.11);
+
+  // ── Borders ───────────────────────────────────────────────
+  --br:   rgba(255,255,255,0.08);
+  --br-2: rgba(255,255,255,0.14);
+
+  // ── Accent — Apple blue ────────────────────────────────────
+  --ac:    #0A84FF;
+  --ac-10: rgba(10,132,255,0.10);
+  --ac-18: rgba(10,132,255,0.18);
+  --ac-30: rgba(10,132,255,0.30);
+  --ac-50: rgba(10,132,255,0.50);
+
+  // ── Semantic ──────────────────────────────────────────────
+  --ok:     #22C55E;
+  --ok-15:  rgba(34,197,94,0.15);
+  --err:    #EF4444;
+  --err-10: rgba(239,68,68,0.10);
+  --err-20: rgba(239,68,68,0.20);
+
+  // ── Text ──────────────────────────────────────────────────
+  --t1: rgba(255,255,255,0.96);
+  --t2: rgba(255,255,255,0.58);
+  --t3: rgba(255,255,255,0.34);
+  --t4: rgba(255,255,255,0.18);
+
+  // ── Specular ──────────────────────────────────────────────
+  --sp: rgba(255,255,255,0.06);
+
+  // ── Shadows ───────────────────────────────────────────────
+  --sh-sm: 0 1px 3px rgba(0,0,0,0.80), 0 1px 2px rgba(0,0,0,0.60);
+  --sh-md: 0 4px 24px rgba(0,0,0,0.80);
+  --sh-lg: 0 16px 48px rgba(0,0,0,0.90);
+
+  // ── Header frosted bg ──────────────────────────────────────
+  --header-bg: rgba(0,0,0,0.82);
+}
+
+[data-theme="light"] {
+  --bg:   #F8F8F8;
+  --bg-2: #EFEFEF;
+
+  --sf-1: rgba(0,0,0,0.04);
+  --sf-2: rgba(0,0,0,0.06);
+  --sf-3: rgba(0,0,0,0.09);
+
+  --br:   rgba(0,0,0,0.08);
+  --br-2: rgba(0,0,0,0.14);
+
+  --ac:    #0070F3;
+  --ac-10: rgba(0,112,243,0.10);
+  --ac-18: rgba(0,112,243,0.15);
+  --ac-30: rgba(0,112,243,0.25);
+  --ac-50: rgba(0,112,243,0.50);
+
+  --ok:     #16A34A;
+  --ok-15:  rgba(22,163,74,0.12);
+  --err:    #DC2626;
+  --err-10: rgba(220,38,38,0.08);
+  --err-20: rgba(220,38,38,0.16);
+
+  --t1: #0A0A0A;
+  --t2: rgba(10,10,10,0.60);
+  --t3: rgba(10,10,10,0.40);
+  --t4: rgba(10,10,10,0.24);
+
+  --sp: rgba(255,255,255,0.80);
+
+  --sh-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --sh-md: 0 4px 24px rgba(0,0,0,0.10);
+  --sh-lg: 0 16px 48px rgba(0,0,0,0.15);
+
+  --header-bg: rgba(248,248,248,0.88);
 }
 
 // ═══════════════════════════════════
@@ -33,84 +106,29 @@ html {
 
 body {
   font-family: $font;
-  color: $text-1;
+  color: var(--t1);
   line-height: 1.6;
   min-height: 100vh;
-
-  // Многослойный mesh-градиент фон — глубина без JS
-  background:
-    radial-gradient(ellipse 70% 55% at 15% 15%, rgba(108,99,255,0.13) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 65% at 85% 85%, rgba(78,205,196,0.09) 0%, transparent 60%),
-    radial-gradient(ellipse 45% 40% at 70% 5%,  rgba(108,99,255,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse 35% 50% at 5%  80%,  rgba(78,205,196,0.05) 0%, transparent 50%),
-    $bg;
-  background-attachment: fixed;
-}
-
-// ─── Шумовая текстура (noise) ────────────────
-// Делает дизайн дорогим — используется у Vercel, Linear, Stripe
-// CSS-only через SVG feTurbulence data URI
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.028;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-}
-
-// ─── Плавающий акцентный орб ─────────────────
-// Один медленный орб для дополнительной глубины
-body::after {
-  content: '';
-  position: fixed;
-  top: -20vh;
-  left: -10vw;
-  width: 60vw;
-  height: 60vh;
-  background: radial-gradient(circle, rgba(108,99,255,0.09) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-  animation: orbFloat 30s ease-in-out infinite;
-  will-change: transform;
+  background: var(--bg);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 // ═══════════════════════════════════
 // KEYFRAMES
 // ═══════════════════════════════════
-@keyframes orbFloat {
-  0%,100% { transform: translate(0,0) scale(1); }
-  33%     { transform: translate(6vw, 5vh) scale(1.06); }
-  66%     { transform: translate(-4vw, 8vh) scale(0.94); }
-}
-
-@keyframes gradientFlow {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(14px); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin {
@@ -119,12 +137,27 @@ body::after {
 
 @keyframes pulse {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.35; }
+  50%       { opacity: 0.4; }
 }
 
-@keyframes dotBounce {
-  0%, 80%, 100% { transform: scale(0.7); opacity: 0.3; }
-  40%           { transform: scale(1.1); opacity: 1; }
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes borderShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes skeletonShimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes shine {
+  0%        { transform: translateX(-100%) skewX(-15deg); }
+  20%, 100% { transform: translateX(300%) skewX(-15deg); }
 }
 
 @keyframes dashDraw {
@@ -132,52 +165,28 @@ body::after {
   to   { stroke-dashoffset: 0; }
 }
 
-// Shine sweep — периодическое свечение на кнопках
-@keyframes shine {
-  0%     { transform: translateX(-100%) skewX(-15deg); }
-  20%,100%{ transform: translateX(300%) skewX(-15deg); }
-}
-
-// Shimmer для streaming border
-@keyframes borderShimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
-}
-
-// Skeleton shimmer — loading placeholder lines
-@keyframes skeletonShimmer {
-  0%   { background-position: 200% center; }
-  100% { background-position: -200% center; }
-}
-
-// Появление карточки с лёгкой пружиной
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.98); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 // ═══════════════════════════════════
 // SCROLLBAR
 // ═══════════════════════════════════
 ::-webkit-scrollbar       { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+::-webkit-scrollbar-thumb { background: var(--sf-3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--br-2); }
 
 // ═══════════════════════════════════
 // SELECTION & FOCUS
 // ═══════════════════════════════════
-::selection { background: rgba(108,99,255,0.28); color: $text-1; }
+::selection { background: var(--ac-30); color: var(--t1); }
 
 :focus-visible {
-  outline: 2px solid rgba(108,99,255,0.6);
+  outline: 2px solid var(--ac-50);
   outline-offset: 2px;
   border-radius: $r-sm;
 }
 
-// Accessibility: декоративные анимации отключаем, функциональные (спиннеры) — нет.
-// Анимационные свойства БЕЗ !important — класс-уровень (.spinner и пр.) свободно
-// их переопределяет. Transition делаем мгновенным — он чисто декоративный.
+// ═══════════════════════════════════
+// ACCESSIBILITY
+// ═══════════════════════════════════
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms;
@@ -187,6 +196,9 @@ body::after {
   }
 }
 
+// ═══════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════
 .sr-only {
   position: absolute;
   width: 1px; height: 1px;
