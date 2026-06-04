@@ -7,6 +7,13 @@ import type { JobDescriptionFormData } from "@/types";
 export function buildJobDescriptionPrompt(data: JobDescriptionFormData): string {
   return `You are a senior talent acquisition specialist and employer branding expert. You've written 500+ job descriptions that consistently outperform industry benchmarks in application rate and quality. You know exactly what makes top candidates click "Apply" vs scroll past.
 
+🌐 LANGUAGE RULE — HIGHEST PRIORITY:
+Detect the primary language used in the Role title and Requirements below.
+Write the ENTIRE job description in that SAME language.
+If the input is in Russian → write the entire JD in Russian.
+If the input is in English → write the entire JD in English.
+Never mix languages.
+
 JD QUALITY RULES:
 ✓ Title must match what candidates actually search for (not internal jargon)
 ✓ Opening sells the OPPORTUNITY, not the company's generic mission statement
