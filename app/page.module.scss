@@ -66,16 +66,82 @@
   &:active { transform: scale(0.93); }
 }
 
-// ─── Main content ─────────────────────────────────────────
+// ─── Main ─────────────────────────────────────────────────
 .main {
   flex: 1;
+  position: relative;
+  overflow: hidden;
   width: 100%;
   max-width: 1160px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 0 24px 40px;
 
-  @media (max-width: $bp-md) { padding: 20px 16px; }
-  @media (max-width: $bp-sm) { padding: 14px 12px; }
+  @media (max-width: $bp-md) { padding: 0 16px 32px; }
+  @media (max-width: $bp-sm) { padding: 0 12px 24px; }
+}
+
+// ─── Background glow ──────────────────────────────────────
+.glow {
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at 50% 30%, var(--ac-10) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+
+  @media (max-width: $bp-sm) { width: 400px; height: 240px; }
+}
+
+// ─── Hero ─────────────────────────────────────────────────
+.hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 52px 0 44px;
+
+  @media (max-width: $bp-md) { padding: 36px 0 32px; }
+  @media (max-width: $bp-sm) { padding: 28px 0 24px; }
+}
+
+.heroBadge {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 5px 14px;
+  border-radius: $r-pill;
+  border: 1px solid var(--ac-30);
+  background: var(--ac-10);
+  color: var(--ac);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--t1);
+  margin-bottom: 18px;
+}
+
+.heroAccent {
+  background: linear-gradient(135deg, var(--ac) 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSub {
+  font-size: clamp(0.92rem, 2vw, 1.05rem);
+  color: var(--t2);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.65;
 }
 
 // ─── Footer ───────────────────────────────────────────────
@@ -83,7 +149,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px;
+  padding: 16px;
   border-top: 1px solid var(--br);
 }
 

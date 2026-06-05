@@ -1,17 +1,24 @@
 @use "app/variables" as *;
 
 .container {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
+  gap: 16px;
 }
 
 // ═══════════════════════════════════
-// TAB BAR — clean underline style
+// TAB BAR — pill / segmented style
 // ═══════════════════════════════════
 .tabBar {
-  display: flex;
-  border-bottom: 1px solid var(--br);
-  gap: 0;
+  display: inline-flex;
+  align-self: center;
+  background: var(--sf-1);
+  border: 1px solid var(--br);
+  border-radius: $r-lg;
+  padding: 4px;
+  gap: 2px;
   overflow-x: auto;
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }
@@ -21,10 +28,9 @@
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 13px 20px;
+  padding: 9px 18px;
   border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
+  border-radius: calc(#{$r-lg} - 4px);
   background: transparent;
   color: var(--t3);
   font-family: $font;
@@ -33,20 +39,25 @@
   cursor: pointer;
   white-space: nowrap;
   transition:
+    background $t-fast $ease-std,
     color $t-fast $ease-std,
-    border-color $t-fast $ease-std;
+    box-shadow $t-fast $ease-std;
 
-  &:hover:not(.tabActive) { color: var(--t2); }
+  &:hover:not(.tabActive) {
+    background: var(--sf-2);
+    color: var(--t2);
+  }
 
   @media (max-width: $bp-sm) {
-    padding: 11px 14px;
+    padding: 8px 13px;
     font-size: 0.79rem;
   }
 }
 
 .tabActive {
-  color: var(--t1);
-  border-bottom-color: var(--ac);
+  background: var(--ac);
+  color: #fff;
+  box-shadow: 0 2px 12px var(--ac-30);
 }
 
 .tabIcon {
@@ -60,18 +71,16 @@
 .tabLabel { line-height: 1; }
 
 // ═══════════════════════════════════
-// PANEL — glass card with blue glow
+// PANEL — full glass card
 // ═══════════════════════════════════
 .panel {
   border: 1px solid var(--br);
-  border-top: none;
-  border-radius: 0 0 $r-lg $r-lg;
+  border-radius: $r-lg;
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   overflow: hidden;
   box-shadow:
     var(--sh-md),
-    0 0 40px -10px var(--ac-10);
-  transition: box-shadow $t-default $ease-std;
+    0 0 60px -15px var(--ac-10);
 }

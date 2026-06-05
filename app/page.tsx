@@ -28,7 +28,26 @@ export default function Home() {
 
       {/* ─── Main ─── */}
       <main className={styles.main}>
+
+        {/* Glow */}
+        <div className={styles.glow} aria-hidden="true" />
+
+        {/* Hero */}
+        <section className={styles.hero}>
+          <div className={styles.heroBadge}>AI-Powered · Free · No sign-up</div>
+          <h1 className={styles.heroTitle}>
+            Land your next job<br />
+            <span className={styles.heroAccent}>faster with AI</span>
+          </h1>
+          <p className={styles.heroSub}>
+            Three tools that do the heavy lifting — tailored cover letters,
+            ATS resume analysis, and polished job descriptions. All in seconds.
+          </p>
+        </section>
+
+        {/* Tabs */}
         <Tabs />
+
       </main>
 
       {/* ─── Footer ─── */}
