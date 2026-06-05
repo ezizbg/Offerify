@@ -2,7 +2,7 @@
 
 **AI-powered tools for job seekers and HR professionals.**
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?logo=vercel)](https://offerify.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?logo=vercel)](https://offerify-seven.vercel.app)
 
 ---
 
@@ -29,7 +29,7 @@ Describe a role in plain language. Get a structured, inclusive job posting with 
 
 ## How to use
 
-1. Go to **[offerify.vercel.app](https://offerify.vercel.app)**
+1. Go to **[offerify-seven.vercel.app](https://offerify-seven.vercel.app)**
 2. Pick a tool from the sidebar
 3. Fill in the fields and click **Generate**
 4. Results stream in real time — copy when ready
