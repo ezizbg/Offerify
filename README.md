@@ -6,7 +6,7 @@ Generate cover letters, write job descriptions, and analyze resume-to-job fit in
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?logo=vercel)](https://offerify.vercel.app)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?logo=next.js)](https://nextjs.org/)
-[![Claude](https://img.shields.io/badge/Claude_3.5_Haiku-Anthropic-D97706)](https://anthropic.com)
+[![Claude](https://img.shields.io/badge/Claude_Haiku_4.5-Anthropic-D97706)](https://anthropic.com)
 
 ---
 
