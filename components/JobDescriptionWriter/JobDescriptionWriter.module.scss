@@ -105,8 +105,10 @@
 .submitBtn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 10px 22px;
+  flex: 1;
+  padding: 12px 22px;
   border-radius: $r-pill;
   border: none;
   background: var(--ac);

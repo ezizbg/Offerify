@@ -1,0 +1,108 @@
+@use "app/variables" as *;
+
+.sidebar {
+  width: 210px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px 24px;
+  border-right: 1px solid var(--br);
+  background: var(--sf-1);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+
+  @media (max-width: $bp-md) { display: none; }
+}
+
+// ─── Logo ──────────────────────────────────────────────────
+.logo {
+  padding: 6px 10px 24px;
+}
+
+.logoName {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+// ─── Navigation ────────────────────────────────────────────
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 10px;
+  border-radius: $r-md;
+  border: none;
+  background: transparent;
+  color: var(--t3);
+  font-family: $font;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    background $t-fast $ease-std,
+    color $t-fast $ease-std;
+
+  &:hover:not(.itemActive) {
+    background: var(--sf-2);
+    color: var(--t2);
+  }
+
+  &:active { transform: scale(0.98); }
+}
+
+.itemActive {
+  background: var(--ac-10);
+  color: var(--ac);
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.itemLabels {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.itemLabel {
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemSub {
+  font-size: 0.63rem;
+  color: var(--t4);
+  line-height: 1;
+  white-space: nowrap;
+
+  .itemActive & { color: var(--ac-50); }
+}
+
+.itemDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ac);
+  flex-shrink: 0;
+}

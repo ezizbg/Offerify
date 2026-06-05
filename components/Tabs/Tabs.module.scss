@@ -60,13 +60,18 @@
 .tabLabel { line-height: 1; }
 
 // ═══════════════════════════════════
-// PANEL — clean bordered card
+// PANEL — glass card with blue glow
 // ═══════════════════════════════════
 .panel {
   border: 1px solid var(--br);
   border-top: none;
   border-radius: 0 0 $r-lg $r-lg;
-  background: var(--sf-1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   overflow: hidden;
-  box-shadow: var(--sh-md);
+  box-shadow:
+    var(--sh-md),
+    0 0 40px -10px var(--ac-10);
+  transition: box-shadow $t-default $ease-std;
 }
