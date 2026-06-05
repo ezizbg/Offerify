@@ -1,30 +1,21 @@
 @use "variables" as *;
 
-// ─── App shell ────────────────────────────────────────────
-.app {
-  display: flex;
+// ─── Page shell ───────────────────────────────────────────
+.page {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
 }
 
-// ─── Right content column ─────────────────────────────────
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 100vh;
-}
-
-// ─── Top bar — just "Offerify" ────────────────────────────
-.topBar {
+// ─── Header ───────────────────────────────────────────────
+.header {
   position: sticky;
   top: 0;
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
   padding: 0 28px;
   height: 52px;
   border-bottom: 1px solid var(--br);
@@ -35,31 +26,23 @@
   @media (max-width: $bp-sm) { padding: 0 16px; }
 }
 
-// ─── Wordmark — only visible when sidebar is hidden ────────
 .wordmark {
-  display: none;                 // hidden on desktop (sidebar shows it)
-  text-decoration: none;
-  color: var(--t1);
-  font-size: 0.90rem;
+  font-size: 0.92rem;
   font-weight: 700;
+  color: var(--t1);
   letter-spacing: -0.03em;
+  text-decoration: none;
   transition: opacity $t-fast;
-
   &:hover { opacity: 0.65; }
-
-  @media (max-width: $bp-md) {
-    display: block;              // visible when sidebar disappears
-  }
 }
 
-.topActions {
+.actions {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: auto;   // always push to the right
 }
 
-.headerBtn {
+.iconBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -83,72 +66,16 @@
   &:active { transform: scale(0.93); }
 }
 
-// ─── Tab bar (visible when sidebar hidden) ────────────────
-// Shown at ALL widths where sidebar is absent (≤ bp-md)
-.mobileNav {
-  display: none;
-  align-items: center;
-  justify-content: center;   // ← always centered
-  gap: 4px;
-  border-bottom: 1px solid var(--br);
-  padding: 0 16px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  &::-webkit-scrollbar { display: none; }
-
-  @media (max-width: $bp-md) { display: flex; }
-}
-
-.mobileTab {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 11px 14px;
-  border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  background: transparent;
-  color: var(--t3);
-  font-family: $font;
-  font-size: 0.80rem;
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: color $t-fast, border-color $t-fast;
-
-  &:hover:not(.mobileTabActive) { color: var(--t2); }
-}
-
-.mobileTabActive {
-  color: var(--t1);
-  border-bottom-color: var(--ac);
-}
-
-.mobileTabIcon {
-  display: flex;
-  align-items: center;
-  @media (max-width: 420px) { display: none; }
-}
-
-// ─── Main / tool panel ────────────────────────────────────
+// ─── Main content ─────────────────────────────────────────
 .main {
   flex: 1;
-  padding: 28px 32px;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 32px 24px;
 
-  @media (max-width: $bp-md) { padding: 20px; }
-  @media (max-width: $bp-sm) { padding: 14px; }
-}
-
-.panel {
-  border: 1px solid var(--br);
-  border-radius: $r-lg;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  overflow: hidden;
-  box-shadow: var(--sh-md), 0 0 40px -10px var(--ac-10);
-  animation: fadeUp 0.3s $ease-out both;
+  @media (max-width: $bp-md) { padding: 20px 16px; }
+  @media (max-width: $bp-sm) { padding: 14px 12px; }
 }
 
 // ─── Footer ───────────────────────────────────────────────
